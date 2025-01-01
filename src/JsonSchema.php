@@ -2,4 +2,4 @@
 
 namespace BasilLangevin\LaravelDataSchemas;
 
-class LaravelDataSchemas {}
+class JsonSchema {}

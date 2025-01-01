@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \BasilLangevin\LaravelDataSchemas\LaravelDataSchemas
  */
-class LaravelDataSchemas extends Facade
+class JsonSchema extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \BasilLangevin\LaravelDataSchemas\LaravelDataSchemas::class;
+        return \BasilLangevin\LaravelDataSchemas\JsonSchema::class;
     }
 }
