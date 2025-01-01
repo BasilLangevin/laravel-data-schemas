@@ -2,6 +2,8 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use Illuminate\Support\Collection;
+
 abstract class Keyword
 {
     /**
@@ -26,5 +28,13 @@ abstract class Keyword
             ->value();
     }
 
+    /**
+     * Get the value of the keyword.
+     */
     abstract public function get(): mixed;
+
+    /**
+     * Add the definition for the keyword to the given schema.
+     */
+    abstract public function apply(Collection $schema): Collection;
 }

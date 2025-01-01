@@ -3,7 +3,9 @@
 namespace BasilLangevin\LaravelDataSchemas\Concerns;
 
 use BasilLangevin\LaravelDataSchemas\Exception\KeywordNotSetException;
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 trait HasKeywords
@@ -17,6 +19,22 @@ trait HasKeywords
      * The instances of each keyword that has been set.
      */
     private array $keywordInstances = [];
+
+    /**
+     * Get the instance of the given keyword.
+     */
+    private function getKeywordInstance(string $name): Keyword
+    {
+        if (is_subclass_of($name, Keyword::class)) {
+            $name = $name::method();
+        }
+
+        if (! array_key_exists($name, $this->keywordInstances)) {
+            throw new KeywordNotSetException("The keyword \"{$name}\" has not been set.");
+        }
+
+        return $this->keywordInstances[$name];
+    }
 
     /**
      * Get the keyword class that has the method matching the given name.
@@ -68,9 +86,14 @@ trait HasKeywords
     /**
      * Set the value for the appropriate keyword.
      */
-    private function setKeyword(string $name, ...$arguments): self
+    public function setKeyword(string $name, ...$arguments): self
     {
-        $keyword = $this->getKeywordByMethod($name);
+        if (is_subclass_of($name, Keyword::class)) {
+            $keyword = $name;
+            $name = $name::method();
+        } else {
+            $keyword = $this->getKeywordByMethod($name);
+        }
 
         $this->keywordInstances[$name] = new $keyword(...$arguments);
 
@@ -80,15 +103,29 @@ trait HasKeywords
     /**
      * Get the value for the appropriate keyword.
      */
-    private function getKeyword(string $name): mixed
+    public function getKeyword(string $name): mixed
     {
-        $name = $this->removeGetPrefix($name);
+        return $this->getKeywordInstance($name)->get();
+    }
 
-        if (! array_key_exists($name, $this->keywordInstances)) {
-            throw new KeywordNotSetException("The keyword \"{$name}\" has not been set.");
+    /**
+     * Add the definition for a keyword to the given schema.
+     */
+    public function applyKeyword(string $name, Collection $schema): Collection
+    {
+        return $this->getKeywordInstance($name)->apply($schema);
+    }
+
+    /**
+     * Check if the given keyword has been set.
+     */
+    public function hasKeyword(string $name): bool
+    {
+        if (is_subclass_of($name, Keyword::class)) {
+            $name = $name::method();
         }
 
-        return $this->keywordInstances[$name]->get();
+        return array_key_exists($name, $this->keywordInstances);
     }
 
     /**
@@ -101,7 +138,7 @@ trait HasKeywords
         }
 
         if ($this->keywordGetterExists($name)) {
-            return $this->getKeyword($name);
+            return $this->getKeyword($this->removeGetPrefix($name));
         }
 
         throw new \Exception("Method \"{$name}\" not found");

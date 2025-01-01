@@ -1,5 +1,9 @@
 <?php
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
+
+covers(Keyword::class);
+
 function makeClass(string $name)
 {
     eval("class {$name} extends \BasilLangevin\LaravelDataSchemas\Keywords\Keyword
@@ -7,6 +11,11 @@ function makeClass(string $name)
         public function get(): mixed
         {
             return 'test';
+        }
+
+        public function apply(\Illuminate\Support\Collection \$schema): \Illuminate\Support\Collection
+        {
+            return \$schema;
         }
     }");
 
@@ -22,6 +31,11 @@ function makeClassWithCustomMethod(string $name, string $method)
         public function get(): mixed
         {
             return 'test';
+        }
+
+        public function apply(\Illuminate\Support\Collection \$schema): \Illuminate\Support\Collection
+        {
+            return \$schema;
         }
     }");
 
