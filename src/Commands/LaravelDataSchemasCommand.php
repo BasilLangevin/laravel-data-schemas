@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace BasilLangevin\LaravelDataSchemas\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelDataSchemasCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-data-schemas';
 
     public $description = 'My command';
 
