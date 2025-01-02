@@ -25,6 +25,14 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
     }
 
     /**
+     * Create a new Schema instance.
+     */
+    public static function make(string $name = '', string $description = ''): self
+    {
+        return new static($name, $description);
+    }
+
+    /**
      * Get the name of the schema.
      */
     public function name(): string

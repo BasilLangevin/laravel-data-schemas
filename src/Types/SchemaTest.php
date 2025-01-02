@@ -15,6 +15,14 @@ class SchemaTestSchema extends Schema
     ];
 }
 
+it('can be created with the make method', function () {
+    $schema = SchemaTestSchema::make('test', 'test description');
+
+    expect($schema)->toBeInstanceOf(SchemaTestSchema::class);
+    expect($schema->name())->toBe('test');
+    expect($schema->getDescription())->toBe('test description');
+});
+
 it('has a name', function () {
     $schema = new SchemaTestSchema('test');
 
