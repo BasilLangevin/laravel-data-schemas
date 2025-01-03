@@ -13,25 +13,20 @@ class RequiredKeywordTestSchema extends Schema
     ];
 }
 
-it('can set its required fields', function () {
-    $schema = new RequiredKeywordTestSchema;
-    $schema->required(['test3', 'test4']);
+$basicOutput = collect([
+    'type' => DataType::Object->value,
+]);
 
-    expect($schema->getRequired())->toBe(['test3', 'test4']);
-});
+it('can set its required fields')
+    ->expect(RequiredKeywordTestSchema::make())
+    ->required(['test3', 'test4'])
+    ->getRequired()->toBe(['test3', 'test4']);
 
-it('can apply the required fields to a schema', function () {
-    $schema = new RequiredKeywordTestSchema;
-    $schema->required(['test3', 'test4']);
-
-    $data = collect([
-        'type' => DataType::Object->value,
-    ]);
-
-    $result = $schema->applyKeyword(RequiredKeyword::class, $data);
-
-    expect($result)->toEqual(collect([
+it('can apply the required fields to a schema')
+    ->expect(RequiredKeywordTestSchema::make())
+    ->required(['test3', 'test4'])
+    ->applyKeyword(RequiredKeyword::class, $basicOutput)
+    ->toEqual(collect([
         'type' => DataType::Object->value,
         'required' => ['test3', 'test4'],
     ]));
-});

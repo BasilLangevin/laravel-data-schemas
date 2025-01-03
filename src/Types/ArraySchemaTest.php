@@ -5,10 +5,9 @@ use BasilLangevin\LaravelDataSchemas\Types\ArraySchema;
 
 covers(ArraySchema::class);
 
-it('creates a array schema', function () {
-    $schema = new ArraySchema;
-
-    expect($schema->toArray())->toBe([
+it('creates a array schema')
+    ->expect(ArraySchema::make())
+    ->toArray()
+    ->toBe([
         'type' => DataType::Array->value,
     ]);
-});

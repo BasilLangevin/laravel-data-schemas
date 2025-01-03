@@ -14,38 +14,28 @@ class PropertiesKeywordTestSchema extends Schema
     ];
 }
 
-it('can set its required fields', function () {
-    $properties = [
-        BooleanSchema::make('test'),
-        BooleanSchema::make('test2'),
-    ];
+$properties = [
+    BooleanSchema::make('test'),
+    BooleanSchema::make('test2'),
+];
 
-    $schema = new PropertiesKeywordTestSchema;
-    $schema->properties($properties);
+$basicOutput = collect([
+    'type' => DataType::Object->value,
+]);
 
-    expect($schema->getProperties())->toBe($properties);
-});
+it('can set its properties')
+    ->expect(PropertiesKeywordTestSchema::make())
+    ->properties($properties)
+    ->getProperties()->toBe($properties);
 
-it('can apply the required fields to a schema', function () {
-    $properties = [
-        BooleanSchema::make('test1'),
-        BooleanSchema::make('test2'),
-    ];
-
-    $schema = new PropertiesKeywordTestSchema;
-    $schema->properties($properties);
-
-    $data = collect([
-        'type' => DataType::Object->value,
-    ]);
-
-    $result = $schema->applyKeyword(PropertiesKeyword::class, $data);
-
-    expect($result)->toEqual(collect([
+it('can apply the properties to a schema')
+    ->expect(PropertiesKeywordTestSchema::make())
+    ->properties($properties)
+    ->applyKeyword(PropertiesKeyword::class, $basicOutput)
+    ->toEqual(collect([
         'type' => DataType::Object->value,
         'properties' => [
-            'test1' => $properties[0]->toArray(),
+            'test' => $properties[0]->toArray(),
             'test2' => $properties[1]->toArray(),
         ],
     ]));
-});

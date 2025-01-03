@@ -5,10 +5,9 @@ use BasilLangevin\LaravelDataSchemas\Types\BooleanSchema;
 
 covers(BooleanSchema::class);
 
-it('creates a boolean schema', function () {
-    $schema = new BooleanSchema;
-
-    expect($schema->toArray())->toBe([
+it('creates a boolean schema')
+    ->expect(BooleanSchema::make())
+    ->toArray()
+    ->toBe([
         'type' => DataType::Boolean->value,
     ]);
-});

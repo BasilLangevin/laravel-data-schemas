@@ -39,44 +39,34 @@ class HasKeywordsTestSchema extends Schema
     ];
 }
 
-it('can call a keyword method', function () {
-    $schema = new HasKeywordsTestSchema;
+it('can call a keyword method')
+    ->expect(HasKeywordsTestSchema::make())
+    ->description('This is a description')
+    ->getDescription()
+    ->toBe('This is a description');
 
-    $schema->description('This is a description');
+it('can call a keyword method multiple times to replace the existing value')
+    ->expect(HasKeywordsTestSchema::make())
+    ->description('This is a description')
+    ->description('This is a new description')
+    ->getDescription()
+    ->toBe('This is a new description');
 
-    expect($schema->getDescription())->toBe('This is a description');
-});
-
-it('can call a keyword method multiple times to replace the existing value', function () {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->description('This is a description');
-    $schema->description('This is a new description');
-
-    expect($schema->getDescription())->toBe('This is a new description');
-});
-
-it('can call a keyword getter method', function () {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->description('This is a description');
-
-    expect($schema->getDescription())->toBe('This is a description');
-});
+it('can call a keyword getter method')
+    ->expect(HasKeywordsTestSchema::make())
+    ->description('This is a description')
+    ->getDescription()
+    ->toBe('This is a description');
 
 it('throws an exception when the getter is called but the keyword is not set', function () {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->getDescription();
+    HasKeywordsTestSchema::make()->getDescription();
 })->throws(KeywordNotSetException::class);
 
 test('the getter method must be camel case', function () {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->description('This is a description');
-
-    $schema->getdescription();
-})->throws(Exception::class, 'Method "getdescription" ');
+    HasKeywordsTestSchema::make()
+        ->description('This is a description')
+        ->getdescription();
+})->throws(Exception::class, 'Method "getdescription" not found');
 
 test('throws an exception when no method is found', function ($method) {
     expect(fn () => (new HasKeywordsTestSchema)->$method())
@@ -103,9 +93,8 @@ test('get methods must start with get', function () {
 });
 
 it('can set a keyword', function ($name) {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->setKeyword($name, 'This is a description');
+    $schema = HasKeywordsTestSchema::make()
+        ->setKeyword($name, 'This is a description');
 
     expect($schema->getDescription())->toBe('This is a description');
 })
@@ -115,9 +104,8 @@ it('can set a keyword', function ($name) {
     ]);
 
 it('can get a keyword', function ($name) {
-    $schema = new HasKeywordsTestSchema;
-
-    $schema->description('This is a description');
+    $schema = HasKeywordsTestSchema::make()
+        ->description('This is a description');
 
     expect($schema->getKeyword($name))->toBe('This is a description');
 })
@@ -127,7 +115,7 @@ it('can get a keyword', function ($name) {
     ]);
 
 it('can check if a keyword has been set', function ($name) {
-    $schema = new HasKeywordsTestSchema;
+    $schema = HasKeywordsTestSchema::make();
 
     expect($schema->hasKeyword($name))->toBeFalse();
 
@@ -141,7 +129,7 @@ it('can check if a keyword has been set', function ($name) {
     ]);
 
 it('can apply a keyword', function ($name) {
-    $schema = new HasKeywordsTestSchema;
+    $schema = HasKeywordsTestSchema::make();
 
     $result = collect([
         'type' => DataType::String->value,

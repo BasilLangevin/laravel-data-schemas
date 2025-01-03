@@ -4,29 +4,15 @@ use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 
 covers(Keyword::class);
 
-function makeClass(string $name)
+function makeClass(string $name, ?string $method = null)
 {
+    $methodDefinition = $method ?
+        "public static string \$method = '{$method}';"
+        : '';
+
     eval("class {$name} extends \BasilLangevin\LaravelDataSchemas\Keywords\Keyword
     {
-        public function get(): mixed
-        {
-            return 'test';
-        }
-
-        public function apply(\Illuminate\Support\Collection \$schema): \Illuminate\Support\Collection
-        {
-            return \$schema;
-        }
-    }");
-
-    return new $name;
-}
-
-function makeClassWithCustomMethod(string $name, string $method)
-{
-    eval("class {$name} extends \BasilLangevin\LaravelDataSchemas\Keywords\Keyword
-    {
-        public static string \$method = '{$method}';
+        {$methodDefinition}
 
         public function get(): mixed
         {
@@ -43,9 +29,7 @@ function makeClassWithCustomMethod(string $name, string $method)
 }
 
 it('generates a method name from the class name', function ($className, $method) {
-    $keyword = makeClass($className);
-
-    expect($keyword->method())->toBe($method);
+    expect(makeClass($className)->method())->toBe($method);
 })
     ->with([
         ['TestKeyword', 'test'],
@@ -54,9 +38,7 @@ it('generates a method name from the class name', function ($className, $method)
     ]);
 
 it('can define a custom method name', function ($className, $method) {
-    $keyword = makeClassWithCustomMethod($className, $method);
-
-    expect($keyword->method())->toBe($method);
+    expect(makeClass($className, $method)->method())->toBe($method);
 })
     ->with([
         ['TestCustomKeyword', 'randomMethod'],

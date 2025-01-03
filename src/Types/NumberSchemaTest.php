@@ -5,10 +5,9 @@ use BasilLangevin\LaravelDataSchemas\Types\NumberSchema;
 
 covers(NumberSchema::class);
 
-it('creates a number schema', function () {
-    $schema = new NumberSchema;
-
-    expect($schema->toArray())->toBe([
+it('creates a number schema')
+    ->expect(NumberSchema::make())
+    ->toArray()
+    ->toBe([
         'type' => DataType::Number->value,
     ]);
-});

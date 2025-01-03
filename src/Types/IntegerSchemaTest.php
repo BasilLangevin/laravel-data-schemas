@@ -5,10 +5,9 @@ use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
 
 covers(IntegerSchema::class);
 
-it('creates a integer schema', function () {
-    $schema = new IntegerSchema;
-
-    expect($schema->toArray())->toBe([
+it('creates a integer schema')
+    ->expect(IntegerSchema::make())
+    ->toArray()
+    ->toBe([
         'type' => DataType::Integer->value,
     ]);
-});

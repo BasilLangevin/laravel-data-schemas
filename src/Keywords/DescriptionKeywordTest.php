@@ -13,31 +13,24 @@ class DescriptionKeywordTestSchema extends Schema
     ];
 }
 
-it('can set its description on construction', function () {
-    $schema = new DescriptionKeywordTestSchema('test', 'test description');
+$basicOutput = collect([
+    'type' => DataType::String->value,
+]);
 
-    expect($schema->getDescription())->toBe('test description');
-});
+it('can set its description on construction')
+    ->expect(DescriptionKeywordTestSchema::make('test', 'test description'))
+    ->getDescription()->toBe('test description');
 
-it('can set its description after construction', function () {
-    $schema = new DescriptionKeywordTestSchema('test');
-    $schema->description('test description');
+it('can set its description after construction')
+    ->expect(DescriptionKeywordTestSchema::make('test'))
+    ->description('test description')
+    ->getDescription()->toBe('test description');
 
-    expect($schema->getDescription())->toBe('test description');
-});
-
-it('can apply the description to a schema', function () {
-    $schema = new DescriptionKeywordTestSchema('test');
-    $schema->description('test description');
-
-    $data = collect([
-        'type' => DataType::String->value,
-    ]);
-
-    $result = $schema->applyKeyword(DescriptionKeyword::class, $data);
-
-    expect($result)->toEqual(collect([
+it('can apply the description to a schema')
+    ->expect(DescriptionKeywordTestSchema::make())
+    ->description('test description')
+    ->applyKeyword(DescriptionKeyword::class, $basicOutput)
+    ->toEqual(collect([
         'type' => DataType::String->value,
         'description' => 'test description',
     ]));
-});

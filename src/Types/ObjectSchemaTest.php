@@ -5,10 +5,9 @@ use BasilLangevin\LaravelDataSchemas\Types\ObjectSchema;
 
 covers(ObjectSchema::class);
 
-it('creates an object schema', function () {
-    $schema = new ObjectSchema;
-
-    expect($schema->toArray())->toBe([
+it('creates an object schema')
+    ->expect(ObjectSchema::make())
+    ->toArray()
+    ->toBe([
         'type' => DataType::Object->value,
     ]);
-});
