@@ -2,7 +2,10 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Transformers\PropertyTransformer;
+use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
+use ReflectionProperty;
 
 class PropertiesKeyword extends Keyword
 {
@@ -26,5 +29,17 @@ class PropertiesKeyword extends Keyword
         })->all();
 
         return $schema->merge(compact('properties'));
+    }
+
+    /**
+     * Infer the value of the keyword from the object, or return
+     * null if the object schema should not have this keyword.
+     */
+    public static function parse(ReflectionHelper $reflector): ?array
+    {
+        return $reflector->properties()
+            ->map(function (ReflectionProperty $property) {
+                return PropertyTransformer::transform($property);
+            })->toArray();
     }
 }

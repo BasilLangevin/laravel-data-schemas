@@ -2,81 +2,28 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Transformers\Properties\PropertyTransformer;
 use BasilLangevin\LaravelDataSchemas\Types\ObjectSchema;
-use Illuminate\Support\Collection;
-use ReflectionClass;
+use BasilLangevin\LaravelDataSchemas\Types\Schema;
 use ReflectionProperty;
+use Reflector;
 
-class DataTransformer
+class DataTransformer extends Transformer
 {
-    public function __construct(protected string $dataClass) {}
+    public static string $schemaClass = ObjectSchema::class;
 
     /**
-     * Transform a Spatie Data class into a Schema object.
+     * Transform a ReflectionProperty into a Schema object.
      */
-    public static function transform(string $dataClass): ObjectSchema
+    public static function transform(Reflector $reflector): Schema
     {
-        return (new self($dataClass))->build();
+        return (new self($reflector))->getSchema();
     }
 
     /**
-     * Build the Schema object.
+     * Make a new Schema object.
      */
-    protected function build(): ObjectSchema
+    protected function makeSchema(): Schema
     {
-        return ObjectSchema::make($this->getName())
-            ->properties($this->transformProperties())
-            ->required($this->getRequiredProperties());
-    }
-
-    /**
-     * Get the ReflectionClass instance for the data class.
-     */
-    protected function reflection(): ReflectionClass
-    {
-        return new ReflectionClass($this->dataClass);
-    }
-
-    /**
-     * Get the name of the data class.
-     */
-    protected function getName(): string
-    {
-        return $this->reflection()->getShortName();
-    }
-
-    /**
-     * Get the data class' public properties.
-     */
-    protected function getProperties(): Collection
-    {
-        return collect($this->reflection()->getProperties(ReflectionProperty::IS_PUBLIC));
-    }
-
-    /**
-     * Transform the properties into an array of Schema objects.
-     */
-    protected function transformProperties(): array
-    {
-        return $this->getProperties()
-            ->map(function (ReflectionProperty $property) {
-                return PropertyTransformer::transform($property);
-            })->toArray();
-    }
-
-    /**
-     * Get the required properties.
-     */
-    protected function getRequiredProperties(): array
-    {
-        return $this->getProperties()
-            ->filter(function (ReflectionProperty $property) {
-                $type = $property->getType();
-
-                return $type !== null && ! $type->allowsNull();
-            })
-            ->map->getName()
-            ->toArray();
+        return static::$schemaClass::make($this->reflector->getShortName());
     }
 }

@@ -4,6 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 
 use BasilLangevin\LaravelDataSchemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
+use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 
 abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
@@ -48,6 +49,21 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Add any keywords that can be inferred from the reflection object.
+     */
+    public function resolveKeywords(ReflectionHelper $reflector): static
+    {
+        return collect(static::$keywords)
+            ->reduce(function (self $schema, string $keyword) use ($reflector) {
+                if ($value = $keyword::parse($reflector)) {
+                    return $schema->setKeyword($keyword, $value);
+                }
+
+                return $schema;
+            }, $this);
     }
 
     /**

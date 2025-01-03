@@ -23,6 +23,11 @@ function makeClass(string $name, ?string $method = null)
         {
             return \$schema;
         }
+
+        public static function parse(\BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper \$reflector): ?string
+        {
+            return 'test';
+        }
     }");
 
     return new $name;

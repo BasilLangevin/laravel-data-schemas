@@ -2,6 +2,8 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
+use BasilLangevin\LaravelDataSchemas\Transformers\Reflector;
 use Illuminate\Support\Collection;
 
 abstract class Keyword
@@ -37,4 +39,10 @@ abstract class Keyword
      * Add the definition for the keyword to the given schema.
      */
     abstract public function apply(Collection $schema): Collection;
+
+    /**
+     * Infer the value of the keyword from the reflector, or return
+     * null if the reflector schema should not have this keyword.
+     */
+    abstract public static function parse(ReflectionHelper $reflector): mixed;
 }
