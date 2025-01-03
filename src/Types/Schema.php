@@ -4,6 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 
 use BasilLangevin\LaravelDataSchemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 
@@ -56,14 +57,27 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
      */
     public function resolveKeywords(ReflectionHelper $reflector): static
     {
-        return collect(static::$keywords)
-            ->reduce(function (self $schema, string $keyword) use ($reflector) {
-                if ($value = $keyword::parse($reflector)) {
-                    return $schema->setKeyword($keyword, $value);
-                }
+        collect(static::$keywords)
+            ->each(fn (string $keyword) => $this->resolveKeyword($keyword, $reflector));
 
-                return $schema;
-            }, $this);
+        return $this;
+    }
+
+    /**
+     * Add a keyword if its value can be inferred.
+     *
+     * Because we need to be able to set null values, the parse
+     * method throws an exception if no value can be inferred.
+     */
+    protected function resolveKeyword(string $keyword, ReflectionHelper $reflector): self
+    {
+        try {
+            $value = $keyword::parse($reflector);
+        } catch (KeywordValueCouldNotBeInferred $e) {
+            return $this;
+        }
+
+        return $this->setKeyword($keyword, $value);
     }
 
     /**

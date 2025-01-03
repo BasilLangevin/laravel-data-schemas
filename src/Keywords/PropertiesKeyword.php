@@ -2,6 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\PropertyTransformer;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
@@ -35,11 +36,17 @@ class PropertiesKeyword extends Keyword
      * Infer the value of the keyword from the object, or return
      * null if the object schema should not have this keyword.
      */
-    public static function parse(ReflectionHelper $reflector): ?array
+    public static function parse(ReflectionHelper $reflector): array
     {
-        return $reflector->properties()
+        $properties = $reflector->properties()
             ->map(function (ReflectionProperty $property) {
                 return PropertyTransformer::transform($property);
-            })->toArray();
+            });
+
+        if ($properties->isEmpty()) {
+            throw new KeywordValueCouldNotBeInferred;
+        }
+
+        return $properties->toArray();
     }
 }

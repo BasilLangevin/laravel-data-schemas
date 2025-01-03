@@ -3,6 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Attributes\Description;
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\DocBlockParser;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
@@ -32,10 +33,12 @@ class DescriptionKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the property, or return
-     * null if the property schema should not have this keyword.
+     * Infer the value of the keyword from the reflector, or throw
+     * an exception if the schema should not have this keyword.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
-    public static function parse(ReflectionHelper $property): ?string
+    public static function parse(ReflectionHelper $property): string
     {
         if ($attribute = $property->getAttribute(Description::class)) {
             return $attribute->getDescription();
@@ -48,9 +51,11 @@ class DescriptionKeyword extends Keyword
     }
 
     /**
-     * Parse the description from the property.
+     * Parse the description from a property.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
-    protected static function parseProperty(ReflectionHelper $property): ?string
+    protected static function parseProperty(ReflectionHelper $property): string
     {
         [$propertyDoc, $constructorDoc, $classDoc] = static::getPropertyDocBlocks($property);
 
@@ -62,7 +67,7 @@ class DescriptionKeyword extends Keyword
             ?? $propertyDoc?->getSummary()
             ?? $constructorDoc?->getParamDescription($name)
             ?? $classDoc?->getVarDescription($name)
-            ?? null;
+            ?? throw new KeywordValueCouldNotBeInferred;
     }
 
     /**
@@ -80,14 +85,16 @@ class DescriptionKeyword extends Keyword
     }
 
     /**
-     * Parse the description from the class.
+     * Parse the description from a class.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
-    protected static function parseClass(ReflectionHelper $class): ?string
+    protected static function parseClass(ReflectionHelper $class): string
     {
         $docBlock = DocBlockParser::make($class->getDocComment());
 
         return $docBlock?->getDescription()
             ?? $docBlock?->getSummary()
-            ?? null;
+            ?? throw new KeywordValueCouldNotBeInferred;
     }
 }

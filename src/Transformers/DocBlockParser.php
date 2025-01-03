@@ -64,7 +64,7 @@ class DocBlockParser
     {
         return array_filter(
             $this->getChildren(),
-            fn($child) => $child instanceof PhpDocTextNode
+            fn ($child) => $child instanceof PhpDocTextNode
         );
     }
 
@@ -84,7 +84,7 @@ class DocBlockParser
         }
 
         if ($content->contains(".\n")) {
-            return $content->before(".\n")->append(".")->trim();
+            return $content->before(".\n")->append('.')->trim();
         }
 
         return $content->trim();
@@ -141,7 +141,7 @@ class DocBlockParser
         $name = Str::start($name, '$');
 
         return $this->getParamTagValues()
-            ->first(fn(ParamTagValueNode $tag) => $tag->parameterName === $name);
+            ->first(fn (ParamTagValueNode $tag) => $tag->parameterName === $name);
     }
 
     /**
@@ -172,7 +172,7 @@ class DocBlockParser
         $name = Str::start($name, '$');
 
         return $this->getVarTagValues()
-            ->first(fn(VarTagValueNode $tag) => $tag->variableName === $name);
+            ->first(fn (VarTagValueNode $tag) => $tag->variableName === $name);
     }
 
     /**

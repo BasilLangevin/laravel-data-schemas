@@ -2,6 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use BasilLangevin\LaravelDataSchemas\Transformers\Reflector;
 use Illuminate\Support\Collection;
@@ -41,8 +42,10 @@ abstract class Keyword
     abstract public function apply(Collection $schema): Collection;
 
     /**
-     * Infer the value of the keyword from the reflector, or return
-     * null if the reflector schema should not have this keyword.
+     * Infer the value of the keyword from the reflector, or throw
+     * an exception if the schema should not have this keyword.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
     abstract public static function parse(ReflectionHelper $reflector): mixed;
 }

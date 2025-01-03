@@ -3,6 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Attributes\Title;
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\DocBlockParser;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
@@ -30,10 +31,12 @@ class TitleKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the property, or return
-     * null if the property schema should not have this keyword.
+     * Infer the value of the keyword from the reflector, or throw
+     * an exception if the schema should not have this keyword.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
-    public static function parse(ReflectionHelper $reflector): ?string
+    public static function parse(ReflectionHelper $reflector): string
     {
         if ($reflector->hasAttribute(Title::class)) {
             return $reflector->getAttribute(Title::class);
@@ -43,9 +46,9 @@ class TitleKeyword extends Keyword
 
         // The doc block summary only becomes the title if it also has a description.
         if (! $docBlock?->hasDescription()) {
-            return null;
+            throw new KeywordValueCouldNotBeInferred;
         }
 
-        return $docBlock->getSummary() ?? null;
+        return $docBlock->getSummary() ?? throw new KeywordValueCouldNotBeInferred;
     }
 }

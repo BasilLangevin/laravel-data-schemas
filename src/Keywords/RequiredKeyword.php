@@ -2,6 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 use ReflectionProperty;
@@ -29,10 +30,12 @@ class RequiredKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the object, or return
-     * null if the object schema should not have this keyword.
+     * Infer the value of the keyword from the reflector, or throw
+     * an exception if the schema should not have this keyword.
+     *
+     * @throws KeywordValueCouldNotBeInferred
      */
-    public static function parse(ReflectionHelper $reflector): ?array
+    public static function parse(ReflectionHelper $reflector): array
     {
         $result = $reflector->properties()
             ->filter(function (ReflectionProperty $property) {
@@ -43,6 +46,8 @@ class RequiredKeyword extends Keyword
             ->map->getName()
             ->toArray();
 
-        return $result === [] ? null : $result;
+        return $result === []
+            ? throw new KeywordValueCouldNotBeInferred
+            : $result;
     }
 }
