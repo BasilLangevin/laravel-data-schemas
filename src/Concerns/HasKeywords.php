@@ -2,6 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Concerns;
 
+use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Exception\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
@@ -141,6 +142,6 @@ trait HasKeywords
             return $this->getKeyword($this->removeGetPrefix($name));
         }
 
-        throw new \Exception("Method \"{$name}\" not found");
+        throw new BadMethodCallException("Method \"{$name}\" not found");
     }
 }

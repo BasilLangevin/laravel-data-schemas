@@ -1,10 +1,12 @@
 <?php
 
+use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exception\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
+use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use BasilLangevin\LaravelDataSchemas\Types\Schema;
 use Illuminate\Support\Collection;
 
@@ -28,6 +30,11 @@ class TheTestKeyword extends Keyword
         return $schema->merge([
             'result' => 'I was successfully applied',
         ]);
+    }
+
+    public static function parse(ReflectionHelper $reflector): ?string
+    {
+        return 'test';
     }
 }
 
@@ -66,11 +73,11 @@ test('the getter method must be camel case', function () {
     HasKeywordsTestSchema::make()
         ->description('This is a description')
         ->getdescription();
-})->throws(Exception::class, 'Method "getdescription" not found');
+})->throws(BadMethodCallException::class, 'Method "getdescription" not found');
 
 test('throws an exception when no method is found', function ($method) {
     expect(fn () => (new HasKeywordsTestSchema)->$method())
-        ->toThrow(Exception::class, 'Method "'.$method.'" not found');
+        ->toThrow(BadMethodCallException::class, 'Method "'.$method.'" not found');
 })
     ->with([
         'nonexistentMethod',
