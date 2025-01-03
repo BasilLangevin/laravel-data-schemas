@@ -117,6 +117,59 @@ describe('Property annotations', function () {
             ->toBe('The property we\'re testing.');
     });
 
+    it('can be set with a DocBlock description on the property', function () {
+        class DocBlockDescriptionPropertyTest extends Data
+        {
+            public function __construct(
+                /**
+                 * The property we're testing.
+                 *
+                 * It also has a description.
+                 */
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(DocBlockDescriptionPropertyTest::class)->toArray();
+
+        expect(Arr::get($schema, 'properties.testParameter.description'))
+            ->toBe('It also has a description.');
+    });
+
+    it('can be set with a DocBlock summary on the class', function () {
+        /** The class we're testing. */
+        class DocBlockSummaryClassTest extends Data
+        {
+            public function __construct(
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(DocBlockSummaryClassTest::class)->toArray();
+
+        expect(Arr::get($schema, 'description'))
+            ->toBe('The class we\'re testing.');
+    });
+
+    it('can be set with a DocBlock description on the class', function () {
+        /**
+         * The class we're testing.
+         *
+         * It also has a description.
+         */
+        class DocBlockDescriptionClassTest extends Data
+        {
+            public function __construct(
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(DocBlockDescriptionClassTest::class)->toArray();
+
+        expect(Arr::get($schema, 'description'))
+            ->toBe('It also has a description.');
+    });
+
     it('can be set with a param annotation on the constructor', function () {
         class ParamConstructorAnnotationTest extends Data
         {
@@ -145,5 +198,31 @@ describe('Property annotations', function () {
 
         expect(Arr::get($schema, 'properties.testParameter.description'))
             ->toBe('This is a test description.');
+    });
+
+    it('returns null if no description is found', function () {
+        class NoDescriptionTest extends Data
+        {
+            public function __construct(
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(NoDescriptionTest::class)->toArray();
+
+        expect(Arr::has($schema, 'properties.testParameter.description'))
+            ->toBeFalse();
+    });
+
+    it('returns null if it has no description or constructor method', function () {
+        class NoDescriptionOrConstructorMethodTest extends Data
+        {
+            public bool $testParameter;
+        }
+
+        $schema = JsonSchema::make(NoDescriptionOrConstructorMethodTest::class)->toArray();
+
+        expect(Arr::has($schema, 'properties.testParameter.description'))
+            ->toBeFalse();
     });
 });

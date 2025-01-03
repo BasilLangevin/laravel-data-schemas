@@ -52,16 +52,13 @@ class DescriptionKeyword extends Keyword
      */
     protected static function parseProperty(ReflectionHelper $property): ?string
     {
-        [$propertyDoc, $constructorDoc, $classDoc] = [
-            DocBlockParser::make($property->getDocComment()),
-            DocBlockParser::make($property->getDeclaringClass()->getMethod('__construct')?->getDocComment()),
-            DocBlockParser::make($property->getDeclaringClass()->getDocComment()),
-        ];
+        [$propertyDoc, $constructorDoc, $classDoc] = static::getPropertyDocBlocks($property);
 
         $name = $property->getName();
 
         return $propertyDoc?->getParamDescription($name)
             ?? $propertyDoc?->getVarDescription()
+            ?? $propertyDoc?->getDescription()
             ?? $propertyDoc?->getSummary()
             ?? $constructorDoc?->getParamDescription($name)
             ?? $classDoc?->getVarDescription($name)
@@ -69,10 +66,28 @@ class DescriptionKeyword extends Keyword
     }
 
     /**
+     * Get the doc blocks for the property.
+     */
+    protected static function getPropertyDocBlocks(ReflectionHelper $property): array
+    {
+        $class = $property->getDeclaringClass();
+
+        return [
+            DocBlockParser::make($property->getDocComment()),
+            DocBlockParser::make($class->hasMethod('__construct') ? $class->getMethod('__construct')->getDocComment() : null),
+            DocBlockParser::make($class->getDocComment()),
+        ];
+    }
+
+    /**
      * Parse the description from the class.
      */
     protected static function parseClass(ReflectionHelper $class): ?string
     {
-        return DocBlockParser::make($class->getDocComment())?->getSummary() ?? null;
+        $docBlock = DocBlockParser::make($class->getDocComment());
+
+        return $docBlock?->getDescription()
+            ?? $docBlock?->getSummary()
+            ?? null;
     }
 }
