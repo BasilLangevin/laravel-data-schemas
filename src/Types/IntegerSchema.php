@@ -5,6 +5,8 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Keywords\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Number\MaximumKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Number\MinimumKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\TitleKeyword;
 
 class IntegerSchema extends Schema
@@ -15,5 +17,7 @@ class IntegerSchema extends Schema
         TitleKeyword::class,
         DescriptionKeyword::class,
         DefaultKeyword::class,
+        MinimumKeyword::class,
+        MaximumKeyword::class,
     ];
 }
