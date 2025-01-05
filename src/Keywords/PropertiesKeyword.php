@@ -6,7 +6,6 @@ use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\PropertyTransformer;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
-use ReflectionProperty;
 
 class PropertiesKeyword extends Keyword
 {
@@ -39,7 +38,7 @@ class PropertiesKeyword extends Keyword
     public static function parse(ReflectionHelper $reflector): array
     {
         $properties = $reflector->properties()
-            ->map(function (ReflectionProperty $property) {
+            ->map(function (ReflectionHelper $property) {
                 return PropertyTransformer::transform($property);
             });
 

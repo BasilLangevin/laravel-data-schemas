@@ -10,9 +10,9 @@ abstract class PropertyTransformer extends Transformer
     /**
      * Transform a ReflectionProperty into a Schema object.
      */
-    public static function transform(Reflector $reflector): Schema
+    public static function transform(Reflector|ReflectionHelper $reflector): Schema
     {
-        $type = (new ReflectionHelper($reflector))->getType()->getName();
+        $type = $reflector->getType()->getName();
 
         $transformer = match ($type) {
             'bool' => BooleanTransformer::class,

@@ -17,6 +17,32 @@ class TestReflectionHelperClass
     }
 }
 
+it('can check if the reflected entity is a class', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->isClass())->toBe(true);
+});
+
+test('isClass returns false if the reflected entity is not a class', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->isClass())->toBe(false);
+});
+
+it('can check if the reflected entity is a property', function () {
+    $property = new ReflectionProperty(TestReflectionHelperClass::class, 'test');
+
+    $reflector = new ReflectionHelper($property);
+
+    expect($reflector->isProperty())->toBe(true);
+});
+
+test('isProperty returns false if the reflected entity is not a property', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->isProperty())->toBe(false);
+});
+
 it('can call a method on the reflector', function () {
     $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
     $reflector->isCloneable();
@@ -54,5 +80,8 @@ it('can get the properties', function () {
     expect($reflector->properties())
         ->toBeCollection()
         ->toHaveCount(1)
-        ->first()->name->toBe('test');
+        ->each->toBeInstanceOf(ReflectionHelper::class);
+
+    expect($reflector->properties()->first())
+        ->name->toBe('test');
 });

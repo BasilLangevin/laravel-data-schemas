@@ -25,9 +25,12 @@ abstract class Transformer
     /**
      * Create a new PropertyTransformer instance.
      */
-    public function __construct(Reflector $reflector)
+    public function __construct(Reflector|ReflectionHelper $reflector)
     {
-        $this->reflector = new ReflectionHelper($reflector);
+        $this->reflector = $reflector instanceof ReflectionHelper
+            ? $reflector
+            : new ReflectionHelper($reflector);
+
         $this->schema = $this->makeSchema()->resolveKeywords($this->reflector);
     }
 

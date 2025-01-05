@@ -35,6 +35,10 @@ class DefaultKeyword extends Keyword
      */
     public static function parse(ReflectionHelper $reflector): mixed
     {
+        if ($reflector->isClass()) {
+            throw new KeywordValueCouldNotBeInferred;
+        }
+
         if ($reflector->hasDefaultValue()) {
             return $reflector->getDefaultValue();
         }

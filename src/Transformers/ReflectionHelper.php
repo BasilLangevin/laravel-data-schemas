@@ -4,6 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
 use BadMethodCallException;
 use Illuminate\Support\Collection;
+use ReflectionClass;
 use ReflectionProperty;
 use Reflector;
 
@@ -12,6 +13,22 @@ class ReflectionHelper
     public function __construct(
         protected Reflector $reflector,
     ) {}
+
+    /**
+     * It can check if the reflected entity is a property.
+     */
+    public function isProperty(): bool
+    {
+        return $this->reflector instanceof ReflectionProperty;
+    }
+
+    /**
+     * It can check if the reflected entity is a class.
+     */
+    public function isClass(): bool
+    {
+        return $this->reflector instanceof ReflectionClass;
+    }
 
     /**
      * Call a method on the property.
@@ -23,6 +40,14 @@ class ReflectionHelper
         }
 
         return $this->reflector->$name(...$arguments);
+    }
+
+    /**
+     * Get a property of the reflector.
+     */
+    public function __get(string $name)
+    {
+        return $this->reflector->$name;
     }
 
     /**
@@ -59,8 +84,9 @@ class ReflectionHelper
      */
     public function properties(): Collection
     {
-        return collect(
-            $this->getProperties(ReflectionProperty::IS_PUBLIC)
-        );
+        return collect($this->getProperties(ReflectionProperty::IS_PUBLIC))
+            ->map(function (ReflectionProperty $property) {
+                return new ReflectionHelper($property);
+            });
     }
 }
