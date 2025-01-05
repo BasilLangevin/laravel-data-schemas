@@ -5,7 +5,8 @@ namespace BasilLangevin\LaravelDataSchemas\Keywords;
 use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
-use ReflectionProperty;
+use Spatie\LaravelData\Attributes\Validation\Present;
+use Spatie\LaravelData\Attributes\Validation\Required;
 
 class RequiredKeyword extends Keyword
 {
@@ -37,17 +38,55 @@ class RequiredKeyword extends Keyword
      */
     public static function parse(ReflectionHelper $reflector): array
     {
-        $result = $reflector->properties()
-            ->filter(function (ReflectionProperty $property) {
+        $result = collect([
+            ...self::notNullProperties($reflector),
+            ...self::presentProperties($reflector),
+            ...self::requiredProperties($reflector),
+        ])->unique();
+
+        return $result->isEmpty()
+            ? throw new KeywordValueCouldNotBeInferred
+            : $result->toArray();
+    }
+
+    /**
+     * Get the properties that are not nullable.
+     */
+    protected static function notNullProperties(ReflectionHelper $reflector): array
+    {
+        return $reflector->properties()
+            ->filter(function (ReflectionHelper $property) {
                 $type = $property->getType();
 
                 return $type !== null && ! $type->allowsNull();
             })
             ->map->getName()
             ->toArray();
+    }
 
-        return $result === []
-            ? throw new KeywordValueCouldNotBeInferred
-            : $result;
+    /**
+     * Get the properties that have the Present attribute.
+     */
+    protected static function presentProperties(ReflectionHelper $reflector): array
+    {
+        return $reflector->properties()
+            ->filter(function (ReflectionHelper $property) {
+                return $property->hasAttribute(Present::class);
+            })
+            ->map->getName()
+            ->toArray();
+    }
+
+    /**
+     * Get the properties that have the Required attribute.
+     */
+    protected static function requiredProperties(ReflectionHelper $reflector): array
+    {
+        return $reflector->properties()
+            ->filter(function (ReflectionHelper $property) {
+                return $property->hasAttribute(Required::class);
+            })
+            ->map->getName()
+            ->toArray();
     }
 }

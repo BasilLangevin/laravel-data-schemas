@@ -5,6 +5,8 @@ use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\RequiredKeyword;
 use BasilLangevin\LaravelDataSchemas\Types\Schema;
 use Illuminate\Support\Arr;
+use Spatie\LaravelData\Attributes\Validation\Present;
+use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Data;
 
 covers(RequiredKeyword::class);
@@ -65,5 +67,65 @@ describe('Property annotations', function () {
 
         expect(Arr::has($schema, 'required'))
             ->toBeFalse();
+    });
+
+    it('includes properties with the Required attribute', function () {
+        class RequiredPropertyAttributeTest extends Data
+        {
+            public function __construct(
+                #[Required]
+                public ?bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(RequiredPropertyAttributeTest::class)->toArray();
+
+        expect(Arr::get($schema, 'required'))
+            ->toBe(['testParameter']);
+    });
+
+    it('includes properties with the Present attribute', function () {
+        class PresentPropertyAttributeTest extends Data
+        {
+            public function __construct(
+                #[Present]
+                public ?bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(PresentPropertyAttributeTest::class)->toArray();
+
+        expect(Arr::get($schema, 'required'))
+            ->toBe(['testParameter']);
+    });
+
+    test('a non-nullable property with an attribute is only included in the required array once', function () {
+        class NonNullablePropertyWithAttributeTest extends Data
+        {
+            public function __construct(
+                #[Required]
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(NonNullablePropertyWithAttributeTest::class)->toArray();
+
+        expect(Arr::get($schema, 'required'))
+            ->toBe(['testParameter']);
+    });
+
+    test('a property with both the Required and Present attributes is only included in the required array once', function () {
+        class PropertyWithBothAttributesTest extends Data
+        {
+            public function __construct(
+                #[Required, Present]
+                public bool $testParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(PropertyWithBothAttributesTest::class)->toArray();
+
+        expect(Arr::get($schema, 'required'))
+            ->toBe(['testParameter']);
     });
 });
