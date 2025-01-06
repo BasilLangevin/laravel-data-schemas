@@ -6,7 +6,6 @@ use BasilLangevin\LaravelDataSchemas\Keywords\Number\MaximumKeyword;
 use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Between;
-use Spatie\LaravelData\Attributes\Validation\GreaterThanOrEqualTo;
 use Spatie\LaravelData\Attributes\Validation\LessThanOrEqualTo;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
@@ -68,6 +67,21 @@ describe('Property annotations', function () {
             ->toBe(26);
     });
 
+    it('is not set when LessThanOrEqualTo is non-numeric', function () {
+        class LessThanOrEqualToNonNumericMaximumKeywordTest extends Data
+        {
+            public function __construct(
+                #[LessThanOrEqualTo('otherParameter')]
+                public int $testParameter,
+                public int $otherParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(LessThanOrEqualToNonNumericMaximumKeywordTest::class)->toArray();
+
+        expect(Arr::has($schema, 'properties.testParameter.maximum'))->toBeFalse();
+    });
+
     it('is set to the value of the Max attribute', function () {
         class MaxPropertyAttributeMaximumKeywordTest extends Data
         {
@@ -124,7 +138,7 @@ describe('Property annotations', function () {
         class MultiplePropertyAttributeMaximumKeywordTest extends Data
         {
             public function __construct(
-                #[Size(4), Max(68), MaxDigits(2), Between(37, 100), GreaterThanOrEqualTo(26)]
+                #[Size(4), Max(68), MaxDigits(2), Between(37, 100), LessThanOrEqualTo(26)]
                 public int $testParameter,
             ) {}
         }

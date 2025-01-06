@@ -76,6 +76,10 @@ class MinimumKeyword extends Keyword
             return null;
         }
 
+        if (! is_numeric($attribute->parameters()[0])) {
+            return null;
+        }
+
         return $attribute->parameters()[0];
     }
 

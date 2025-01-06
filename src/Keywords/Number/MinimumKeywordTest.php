@@ -67,6 +67,21 @@ describe('Property annotations', function () {
             ->toBe(26);
     });
 
+    it('is not set when GreaterThanOrEqualTo is non-numeric', function () {
+        class GreaterThanOrEqualToNonNumericMinimumKeywordTest extends Data
+        {
+            public function __construct(
+                #[GreaterThanOrEqualTo('otherParameter')]
+                public int $testParameter,
+                public int $otherParameter,
+            ) {}
+        }
+
+        $schema = JsonSchema::make(GreaterThanOrEqualToNonNumericMinimumKeywordTest::class)->toArray();
+
+        expect(Arr::has($schema, 'properties.testParameter.minimum'))->toBeFalse();
+    });
+
     it('is set to the value of the Min attribute', function () {
         class MinPropertyAttributeMinimumKeywordTest extends Data
         {
