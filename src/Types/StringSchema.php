@@ -8,6 +8,7 @@ use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\FormatKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\String\MaxLengthKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\String\MinLengthKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\String\PatternKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\TitleKeyword;
 
 class StringSchema extends Schema
@@ -21,5 +22,6 @@ class StringSchema extends Schema
         DefaultKeyword::class,
         MinLengthKeyword::class,
         MaxLengthKeyword::class,
+        PatternKeyword::class,
     ];
 }
