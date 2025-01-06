@@ -9,6 +9,8 @@ class TestReflectionHelperClass
 {
     public string $test;
 
+    public int $testInt;
+
     protected string $hidden;
 
     public function test()
@@ -41,6 +43,18 @@ test('isProperty returns false if the reflected entity is not a property', funct
     $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
 
     expect($reflector->isProperty())->toBe(false);
+});
+
+it('can check if the reflected entity is a string', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->isString())->toBe(true);
+});
+
+test('isString returns false if the reflected entity is not a string', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'testInt'));
+
+    expect($reflector->isString())->toBe(false);
 });
 
 it('can call a method on the reflector', function () {
@@ -79,7 +93,7 @@ it('can get the properties', function () {
 
     expect($reflector->properties())
         ->toBeCollection()
-        ->toHaveCount(1)
+        ->toHaveCount(2)
         ->each->toBeInstanceOf(ReflectionHelper::class);
 
     expect($reflector->properties()->first())

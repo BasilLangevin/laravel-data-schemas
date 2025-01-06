@@ -15,7 +15,15 @@ class ReflectionHelper
     ) {}
 
     /**
-     * It can check if the reflected entity is a property.
+     * Determine if the reflected entity is a class.
+     */
+    public function isClass(): bool
+    {
+        return $this->reflector instanceof ReflectionClass;
+    }
+
+    /**
+     * Determine if the reflected entity is a property.
      */
     public function isProperty(): bool
     {
@@ -23,11 +31,15 @@ class ReflectionHelper
     }
 
     /**
-     * It can check if the reflected entity is a class.
+     * Determine if the reflected entity is a string.
      */
-    public function isClass(): bool
+    public function isString(): bool
     {
-        return $this->reflector instanceof ReflectionClass;
+        if (! $this->isProperty()) {
+            return false;
+        }
+
+        return $this->getType()->getName() === 'string';
     }
 
     /**

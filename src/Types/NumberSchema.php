@@ -5,6 +5,7 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Keywords\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\FormatKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\ExclusiveMaximumKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\ExclusiveMinimumKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\MaximumKeyword;
@@ -19,6 +20,7 @@ class NumberSchema extends Schema
     public static array $keywords = [
         TitleKeyword::class,
         DescriptionKeyword::class,
+        FormatKeyword::class,
         DefaultKeyword::class,
         MinimumKeyword::class,
         ExclusiveMinimumKeyword::class,
