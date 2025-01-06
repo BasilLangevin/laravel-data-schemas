@@ -15,9 +15,10 @@ abstract class PropertyTransformer extends Transformer
         $type = $reflector->getType()->getName();
 
         $transformer = match ($type) {
-            'bool' => BooleanTransformer::class,
+            'string' => StringTransformer::class,
             'float' => NumberTransformer::class,
             'int' => IntegerTransformer::class,
+            'bool' => BooleanTransformer::class,
         };
 
         return (new $transformer($reflector))->getSchema();

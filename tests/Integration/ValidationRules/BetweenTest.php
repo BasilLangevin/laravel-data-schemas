@@ -6,6 +6,22 @@ use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Between;
 use Spatie\LaravelData\Data;
 
+it('sets the minLength and maxLength keywords when applied to a string property', function () {
+    class BetweenValidationRuleAttributeStringTest extends Data
+    {
+        public function __construct(
+            #[Between(1, 10)]
+            public string $testParameter,
+        ) {}
+    }
+
+    $schema = JsonSchema::make(BetweenValidationRuleAttributeStringTest::class)->toArray();
+
+    expect(Arr::get($schema, 'properties.testParameter.type'))->toBe(DataType::String->value);
+    expect(Arr::get($schema, 'properties.testParameter.minLength'))->toBe(1);
+    expect(Arr::get($schema, 'properties.testParameter.maxLength'))->toBe(10);
+});
+
 it('sets the maximum and minimum keywords when applied to an integer property', function () {
     class BetweenValidationRuleAttributeIntegerTest extends Data
     {

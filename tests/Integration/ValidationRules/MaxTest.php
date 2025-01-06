@@ -6,6 +6,21 @@ use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Data;
 
+it('sets the maxLength keyword when applied to a string property', function () {
+    class MaxValidationRuleAttributeStringTest extends Data
+    {
+        public function __construct(
+            #[Max(3)]
+            public string $testParameter,
+        ) {}
+    }
+
+    $schema = JsonSchema::make(MaxValidationRuleAttributeStringTest::class)->toArray();
+
+    expect(Arr::get($schema, 'properties.testParameter.type'))->toBe(DataType::String->value);
+    expect(Arr::get($schema, 'properties.testParameter.maxLength'))->toBe(3);
+});
+
 it('sets the maximum keyword when applied to an integer property', function () {
     class MaxValidationRuleAttributeIntegerTest extends Data
     {

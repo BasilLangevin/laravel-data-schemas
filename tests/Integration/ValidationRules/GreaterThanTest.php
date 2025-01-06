@@ -6,6 +6,21 @@ use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 use Spatie\LaravelData\Data;
 
+it('sets the minLength keyword when applied to a string property', function () {
+    class GreaterThanValidationRuleAttributeStringTest extends Data
+    {
+        public function __construct(
+            #[GreaterThan(3)]
+            public string $testParameter,
+        ) {}
+    }
+
+    $schema = JsonSchema::make(GreaterThanValidationRuleAttributeStringTest::class)->toArray();
+
+    expect(Arr::get($schema, 'properties.testParameter.type'))->toBe(DataType::String->value);
+    expect(Arr::get($schema, 'properties.testParameter.minLength'))->toBe(4);
+});
+
 it('sets the exclusiveMinimum keyword when applied to an integer property', function () {
     class GreaterThanValidationRuleAttributeIntegerTest extends Data
     {
