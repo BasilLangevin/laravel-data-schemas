@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.3",
         "echolabsdev/prism": "^0.23.0",
         "illuminate/contracts": "^10.0||^11.0",
         "spatie/laravel-data": "^4.11",
