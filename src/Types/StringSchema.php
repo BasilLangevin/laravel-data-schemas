@@ -5,6 +5,7 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Keywords\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\EnumKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\FormatKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\String\MaxLengthKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\String\MinLengthKeyword;
@@ -19,6 +20,7 @@ class StringSchema extends Schema
         TitleKeyword::class,
         DescriptionKeyword::class,
         FormatKeyword::class,
+        EnumKeyword::class,
         DefaultKeyword::class,
         MinLengthKeyword::class,
         MaxLengthKeyword::class,

@@ -43,12 +43,36 @@ class ReflectionHelper
     }
 
     /**
+     * Determine if the reflected entity is an integer.
+     */
+    public function isInteger(): bool
+    {
+        if (! $this->isProperty()) {
+            return false;
+        }
+
+        return $this->getType()->getName() === 'int';
+    }
+
+    /**
+     * Determine if the reflected entity is a boolean.
+     */
+    public function isBoolean(): bool
+    {
+        if (! $this->isProperty()) {
+            return false;
+        }
+
+        return $this->getType()->getName() === 'bool';
+    }
+
+    /**
      * Call a method on the property.
      */
     public function __call(string $name, array $arguments)
     {
         if (! method_exists($this->reflector, $name)) {
-            throw new BadMethodCallException('The reflector does not have a '.$name.' method.');
+            throw new BadMethodCallException('The reflector does not have a ' . $name . ' method.');
         }
 
         return $this->reflector->$name(...$arguments);

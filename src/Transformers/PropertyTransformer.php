@@ -14,11 +14,12 @@ abstract class PropertyTransformer extends Transformer
     {
         $type = $reflector->getType()->getName();
 
-        $transformer = match ($type) {
-            'string' => StringTransformer::class,
-            'float' => NumberTransformer::class,
-            'int' => IntegerTransformer::class,
-            'bool' => BooleanTransformer::class,
+        $transformer = match (true) {
+            $type === 'string' => StringTransformer::class,
+            $type === 'float' => NumberTransformer::class,
+            $type === 'int' => IntegerTransformer::class,
+            $type === 'bool' => BooleanTransformer::class,
+            enum_exists($type) => EnumTransformer::class,
         };
 
         return (new $transformer($reflector))->getSchema();

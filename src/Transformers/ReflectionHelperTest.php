@@ -11,6 +11,8 @@ class TestReflectionHelperClass
 
     public int $testInt;
 
+    public bool $testBoolean;
+
     protected string $hidden;
 
     public function test()
@@ -57,6 +59,48 @@ test('isString returns false if the reflected entity is not a string', function 
     expect($reflector->isString())->toBe(false);
 });
 
+test('isString returns false if the reflected entity is not a property', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->isString())->toBe(false);
+});
+
+it('can check if the reflected entity is an integer', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'testInt'));
+
+    expect($reflector->isInteger())->toBe(true);
+});
+
+test('isInteger returns false if the reflected entity is not an integer', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->isInteger())->toBe(false);
+});
+
+test('isInteger returns false if the reflected entity is not a property', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->isInteger())->toBe(false);
+});
+
+it('can check if the reflected entity is a boolean', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'testBoolean'));
+
+    expect($reflector->isBoolean())->toBe(true);
+});
+
+test('isBoolean returns false if the reflected entity is not a boolean', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->isBoolean())->toBe(false);
+});
+
+test('isBoolean returns false if the reflected entity is not a property', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->isBoolean())->toBe(false);
+});
+
 it('can call a method on the reflector', function () {
     $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
     $reflector->isCloneable();
@@ -93,7 +137,7 @@ it('can get the properties', function () {
 
     expect($reflector->properties())
         ->toBeCollection()
-        ->toHaveCount(2)
+        ->toHaveCount(3)
         ->each->toBeInstanceOf(ReflectionHelper::class);
 
     expect($reflector->properties()->first())
