@@ -1,10 +1,11 @@
 <?php
 
-use BasilLangevin\LaravelDataSchemas\Attributes\Title;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use ReflectionClass;
+use BasilLangevin\LaravelDataSchemas\Attributes\Title;
+use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
+use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 
-#[Title('Test')]
+#[Title('Test'), CustomAnnotation('test1', 'value1'), CustomAnnotation('test2', 'value2')]
 class TestReflectionHelperClass
 {
     public string $test;
@@ -132,6 +133,15 @@ it('can get an attribute', function () {
         ->getTitle()->toBe('Test');
 });
 
+it('can get multiple attributes of the same type', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    expect($reflector->getAttribute(CustomAnnotation::class))
+        ->toBeCollection()
+        ->toHaveCount(2)
+        ->each->toBeInstanceOf(CustomAnnotation::class);
+});
+
 it('can get the properties', function () {
     $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
 
@@ -142,4 +152,35 @@ it('can get the properties', function () {
 
     expect($reflector->properties()->first())
         ->name->toBe('test');
+});
+
+it('can get its declaring class', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->getClass())->toBeInstanceOf(ReflectionHelper::class);
+    expect($reflector->getClass()->getName())->toBe(TestReflectionHelperClass::class);
+});
+
+it('cannot get its declaring class if it is not a property', function () {
+    $reflector = new ReflectionHelper(new ReflectionClass(TestReflectionHelperClass::class));
+
+    $reflector->getClass();
+})->throws(\Exception::class, 'The reflector is not a property.');
+
+it('can get its siblings', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->siblings())->toBeCollection()
+        ->toHaveCount(2)
+        ->each->toBeInstanceOf(ReflectionHelper::class);
+
+    expect($reflector->siblings()->map->getName()->toArray())
+        ->toBe(['testInt', 'testBoolean']);
+});
+
+it('can get its sibling names', function () {
+    $reflector = new ReflectionHelper(new ReflectionProperty(TestReflectionHelperClass::class, 'test'));
+
+    expect($reflector->siblingNames())->toBeCollection();
+    expect($reflector->siblingNames()->toArray())->toBe(['testInt', 'testBoolean']);
 });

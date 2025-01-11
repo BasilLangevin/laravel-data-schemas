@@ -78,7 +78,7 @@ describe('Property annotations', function () {
         class AfterPropertyAttributeFormatKeywordTest extends Data
         {
             public function __construct(
-                #[After]
+                #[After('2025-01-01')]
                 public string $testParameter,
             ) {}
         }
@@ -93,7 +93,7 @@ describe('Property annotations', function () {
         class AfterOrEqualPropertyAttributeFormatKeywordTest extends Data
         {
             public function __construct(
-                #[AfterOrEqual]
+                #[AfterOrEqual('2025-01-01')]
                 public string $testParameter,
             ) {}
         }
@@ -108,7 +108,7 @@ describe('Property annotations', function () {
         class BeforePropertyAttributeFormatKeywordTest extends Data
         {
             public function __construct(
-                #[Before]
+                #[Before('2025-01-01')]
                 public string $testParameter,
             ) {}
         }
@@ -123,7 +123,7 @@ describe('Property annotations', function () {
         class BeforeOrEqualPropertyAttributeFormatKeywordTest extends Data
         {
             public function __construct(
-                #[BeforeOrEqual]
+                #[BeforeOrEqual('2025-01-01')]
                 public string $testParameter,
             ) {}
         }
@@ -257,7 +257,7 @@ describe('Property annotations', function () {
         class MultipleAttributesFormatKeywordTest extends Data
         {
             public function __construct(
-                #[After, Date]
+                #[After('2025-01-01'), Date]
                 public string $testParameter,
             ) {}
         }

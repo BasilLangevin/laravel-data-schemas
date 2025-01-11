@@ -11,7 +11,7 @@ it('sets the format keyword when applied to a string property', function () {
     class BeforePropertyAttributeTest extends Data
     {
         public function __construct(
-            #[Before]
+            #[Before('2025-01-01')]
             public string $testParameter,
         ) {}
     }

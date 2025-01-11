@@ -105,14 +105,30 @@ class ReflectionHelper
     /**
      * Get an attribute from the property.
      */
-    public function getAttribute(string $attribute): ?object
+    public function getAttribute(string $attribute): object|array|null
     {
         if (! $this->hasAttribute($attribute)) {
             return null;
         }
 
+        if (count($this->getAttributes($attribute)) > 1) {
+            return collect($this->getAttributes($attribute))->map->newInstance();
+        }
+
         return $this->getAttributes($attribute)[0]
             ->newInstance();
+    }
+
+    /**
+     * Get the declaring class of the property as a ReflectionHelper.
+     */
+    public function getClass(): ReflectionHelper
+    {
+        if (! $this->isProperty()) {
+            throw new \Exception('The reflector is not a property.');
+        }
+
+        return new ReflectionHelper($this->getDeclaringClass());
     }
 
     /**
@@ -124,5 +140,25 @@ class ReflectionHelper
             ->map(function (ReflectionProperty $property) {
                 return new ReflectionHelper($property);
             });
+    }
+
+    /**
+     * Get the siblings of the property as a collection.
+     */
+    public function siblings(): Collection
+    {
+        return collect($this->getClass()->properties())
+            ->filter(function (ReflectionHelper $property) {
+                return $property->getName() !== $this->getName();
+            })
+            ->values();
+    }
+
+    /**
+     * Get the sibling names of the property as a collection.
+     */
+    public function siblingNames(): Collection
+    {
+        return $this->siblings()->map->getName();
     }
 }
