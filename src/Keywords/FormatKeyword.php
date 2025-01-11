@@ -39,7 +39,7 @@ class FormatKeyword extends Keyword
         Uuid::class => Format::Uuid,
     ];
 
-    public function __construct(public string|Format $value) {}
+    public function __construct(protected string|Format $value) {}
 
     /**
      * Get the value of the keyword.
@@ -74,7 +74,7 @@ class FormatKeyword extends Keyword
         }
 
         $format = collect(self::RULE_FORMATS)
-            ->filter(fn (Format $format, string $rule) => $property->hasAttribute($rule))
+            ->filter(fn(Format $format, string $rule) => $property->hasAttribute($rule))
             ->first()?->value;
 
         return $format ?? throw new KeywordValueCouldNotBeInferred;

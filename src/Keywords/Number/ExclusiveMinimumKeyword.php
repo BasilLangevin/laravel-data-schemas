@@ -10,7 +10,7 @@ use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 
 class ExclusiveMinimumKeyword extends Keyword
 {
-    public function __construct(public int|float $value) {}
+    public function __construct(protected int|float $value) {}
 
     /**
      * Get the value of the keyword.

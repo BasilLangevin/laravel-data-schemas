@@ -30,7 +30,7 @@ class EnumKeyword extends Keyword
         ],
     ];
 
-    public function __construct(public string|array $value)
+    public function __construct(protected string|array $value)
     {
         if (is_array($value)) {
             return;

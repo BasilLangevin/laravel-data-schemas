@@ -14,7 +14,7 @@ use Spatie\LaravelData\Attributes\Validation\Size;
 
 class MaxLengthKeyword extends Keyword
 {
-    public function __construct(public int $value) {}
+    public function __construct(protected int $value) {}
 
     /**
      * Get the value of the keyword.
