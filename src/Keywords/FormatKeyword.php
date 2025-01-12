@@ -74,7 +74,7 @@ class FormatKeyword extends Keyword
         }
 
         $format = collect(self::RULE_FORMATS)
-            ->filter(fn(Format $format, string $rule) => $property->hasAttribute($rule))
+            ->filter(fn (Format $format, string $rule) => $property->hasAttribute($rule))
             ->first()?->value;
 
         return $format ?? throw new KeywordValueCouldNotBeInferred;
