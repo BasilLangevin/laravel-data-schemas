@@ -167,7 +167,7 @@ class EnumKeyword extends Keyword
     protected static function getDefinedRule(ReflectionHelper $property): ?array
     {
         return collect(static::RULE_VALUES)
-            ->first(fn($v, $attribute) => $property->hasAttribute($attribute));
+            ->first(fn ($v, $attribute) => $property->hasAttribute($attribute));
     }
 
     /**
@@ -186,7 +186,7 @@ class EnumKeyword extends Keyword
         return collect(static::getDefinedRule($property))
             ->first(function ($v, $type) use ($property) {
                 // User-defined methods are case insensitive, so this doesn't need mutation testing.
-                $method = 'is' . ucfirst($type); // @pest-mutate-ignore
+                $method = 'is'.ucfirst($type); // @pest-mutate-ignore
 
                 return $property->{$method}();
             });

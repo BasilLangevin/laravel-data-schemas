@@ -72,7 +72,7 @@ class ReflectionHelper
     public function __call(string $name, array $arguments)
     {
         if (! method_exists($this->reflector, $name)) {
-            throw new BadMethodCallException('The reflector does not have a ' . $name . ' method.');
+            throw new BadMethodCallException('The reflector does not have a '.$name.' method.');
         }
 
         return $this->reflector->$name(...$arguments);
