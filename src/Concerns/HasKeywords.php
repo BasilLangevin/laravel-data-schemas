@@ -3,7 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Concerns;
 
 use BadMethodCallException;
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordNotSetException;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

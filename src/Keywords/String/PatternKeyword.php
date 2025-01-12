@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\String;
 
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
@@ -76,7 +76,7 @@ class PatternKeyword extends Keyword
     public static function parse(ReflectionHelper $property): string
     {
         $patterns = collect(self::RULE_PATTERNS)
-            ->filter(fn(string $pattern, string $rule) => $property->hasAttribute($rule))
+            ->filter(fn (string $pattern, string $rule) => $property->hasAttribute($rule))
             ->map(function (string $pattern, string $rule) use ($property) {
                 if (Str::startsWith($pattern, 'parse')) {
                     return self::{$pattern}($property->getAttribute($rule));
@@ -98,7 +98,7 @@ class PatternKeyword extends Keyword
     protected static function prepareRegexValues(array $values): string
     {
         return collect($values)
-            ->map(fn(string $value) => preg_quote($value, '/'))
+            ->map(fn (string $value) => preg_quote($value, '/'))
             ->join('|');
     }
 
@@ -107,7 +107,7 @@ class PatternKeyword extends Keyword
      */
     protected static function parseDoesntEndWith(DoesntEndWith $rule): string
     {
-        return '/^(?!.*(' . self::prepareRegexValues($rule->parameters()[0]) . ')$).*$/';
+        return '/^(?!.*('.self::prepareRegexValues($rule->parameters()[0]).')$).*$/';
     }
 
     /**
@@ -115,7 +115,7 @@ class PatternKeyword extends Keyword
      */
     protected static function parseDoesntStartWith(DoesntStartWith $rule): string
     {
-        return '/^(?!' . self::prepareRegexValues($rule->parameters()[0]) . ').*$/';
+        return '/^(?!'.self::prepareRegexValues($rule->parameters()[0]).').*$/';
     }
 
     /**
@@ -123,7 +123,7 @@ class PatternKeyword extends Keyword
      */
     protected static function parseEndsWith(EndsWith $rule): string
     {
-        return '/(' . self::prepareRegexValues($rule->parameters()[0]) . ')$/';
+        return '/('.self::prepareRegexValues($rule->parameters()[0]).')$/';
     }
 
     /**
@@ -131,7 +131,7 @@ class PatternKeyword extends Keyword
      */
     protected static function parseStartsWith(StartsWith $rule): string
     {
-        return '/^(' . self::prepareRegexValues($rule->parameters()[0]) . ')/';
+        return '/^('.self::prepareRegexValues($rule->parameters()[0]).')/';
     }
 
     /**

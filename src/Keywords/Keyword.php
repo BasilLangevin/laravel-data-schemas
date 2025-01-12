@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use BasilLangevin\LaravelDataSchemas\Transformers\Reflector;
 use Illuminate\Support\Collection;

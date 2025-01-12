@@ -3,7 +3,7 @@
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordNotSetException;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;

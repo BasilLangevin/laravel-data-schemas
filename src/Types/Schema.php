@@ -4,7 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Types;
 
 use BasilLangevin\LaravelDataSchemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 

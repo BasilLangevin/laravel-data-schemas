@@ -3,7 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Attributes\Description;
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\DocBlockParser;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;

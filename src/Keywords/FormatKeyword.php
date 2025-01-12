@@ -3,7 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Enums\Format;
-use BasilLangevin\LaravelDataSchemas\Exception\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\Validation\ActiveUrl;
@@ -74,7 +74,7 @@ class FormatKeyword extends Keyword
         }
 
         $format = collect(self::RULE_FORMATS)
-            ->filter(fn(Format $format, string $rule) => $property->hasAttribute($rule))
+            ->filter(fn (Format $format, string $rule) => $property->hasAttribute($rule))
             ->first()?->value;
 
         return $format ?? throw new KeywordValueCouldNotBeInferred;

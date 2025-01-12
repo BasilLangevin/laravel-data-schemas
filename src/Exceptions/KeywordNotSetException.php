@@ -1,5 +1,5 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Exception;
+namespace BasilLangevin\LaravelDataSchemas\Exceptions;
 
 class KeywordNotSetException extends \Exception {}

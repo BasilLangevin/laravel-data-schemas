@@ -1,9 +1,9 @@
 <?php
 
-use ReflectionClass;
-use BasilLangevin\LaravelDataSchemas\Attributes\Title;
 use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
+use BasilLangevin\LaravelDataSchemas\Attributes\Title;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
+use ReflectionClass;
 
 #[Title('Test'), CustomAnnotation('test1', 'value1'), CustomAnnotation('test2', 'value2')]
 class TestReflectionHelperClass
