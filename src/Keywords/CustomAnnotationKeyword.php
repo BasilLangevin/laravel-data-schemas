@@ -8,15 +8,23 @@ use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Str;
 use Spatie\LaravelData\Attributes\Validation\After;
+use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
 use Spatie\LaravelData\Attributes\Validation\Before;
 use Spatie\LaravelData\Attributes\Validation\BeforeOrEqual;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
 use Spatie\LaravelData\Attributes\Validation\Different;
+use Spatie\LaravelData\Attributes\Validation\BeforeOrEqual;
+use Spatie\LaravelData\Attributes\Validation\DateFormat;
+use Spatie\LaravelData\Attributes\Validation\Different;
 use Spatie\LaravelData\Attributes\Validation\Digits;
 use Spatie\LaravelData\Attributes\Validation\DigitsBetween;
+use Spatie\LaravelData\Attributes\Validation\DigitsBetween;
 use Spatie\LaravelData\Attributes\Validation\Distinct;
+use Spatie\LaravelData\Attributes\Validation\DoesntEndWith;
+use Spatie\LaravelData\Attributes\Validation\DoesntStartWith;
 use Spatie\LaravelData\Attributes\Validation\DoesntEndWith;
 use Spatie\LaravelData\Attributes\Validation\DoesntStartWith;
 use Spatie\LaravelData\Attributes\Validation\EndsWith;
@@ -79,7 +87,7 @@ class CustomAnnotationKeyword extends Keyword
             : [$this->annotation => $this->value];
 
         return collect($annotations)
-            ->mapWithKeys(fn ($value, $key) => [Str::start($key, 'x-') => $value])
+            ->mapWithKeys(fn($value, $key) => [Str::start($key, 'x-') => $value])
             ->toArray();
     }
 
@@ -101,8 +109,8 @@ class CustomAnnotationKeyword extends Keyword
     {
         $annotations = collect(static::RULE_ANNOTATIONS)
             ->keys()
-            ->filter(fn ($attribute) => $property->hasAttribute($attribute))
-            ->flatMap(fn ($attribute) => static::parseAttribute($property, $attribute))
+            ->filter(fn($attribute) => $property->hasAttribute($attribute))
+            ->flatMap(fn($attribute) => static::parseAttribute($property, $attribute))
             ->filter();
 
         if ($annotations->isEmpty()) {
@@ -132,7 +140,7 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseDateString(ReflectionHelper $property, mixed $value): string
     {
         if ($property->siblingNames()->contains($value)) {
-            return 'the value of '.$value;
+            return 'the value of ' . $value;
         }
 
         if (is_string($value)) {
@@ -162,7 +170,7 @@ class CustomAnnotationKeyword extends Keyword
             $property->getAttribute(After::class)->parameters()[0]
         );
 
-        return ['x-date-after' => 'The value must be after '.$dateString.'.'];
+        return ['x-date-after' => 'The value must be after ' . $dateString . '.'];
     }
 
     /**
@@ -175,7 +183,7 @@ class CustomAnnotationKeyword extends Keyword
             $property->getAttribute(AfterOrEqual::class)->parameters()[0]
         );
 
-        return ['x-date-after-or-equal' => 'The value must be after or equal to '.$dateString.'.'];
+        return ['x-date-after-or-equal' => 'The value must be after or equal to ' . $dateString . '.'];
     }
 
     /**
@@ -188,7 +196,7 @@ class CustomAnnotationKeyword extends Keyword
             $property->getAttribute(Before::class)->parameters()[0]
         );
 
-        return ['x-date-before' => 'The value must be before '.$dateString.'.'];
+        return ['x-date-before' => 'The value must be before ' . $dateString . '.'];
     }
 
     /**
@@ -201,7 +209,7 @@ class CustomAnnotationKeyword extends Keyword
             $property->getAttribute(BeforeOrEqual::class)->parameters()[0]
         );
 
-        return ['x-date-before-or-equal' => 'The value must be before or equal to '.$dateString.'.'];
+        return ['x-date-before-or-equal' => 'The value must be before or equal to ' . $dateString . '.'];
     }
 
     /**
@@ -212,7 +220,7 @@ class CustomAnnotationKeyword extends Keyword
         $attributes = Collection::wrap($property->getAttribute(CustomAnnotation::class));
 
         return $attributes
-            ->flatMap(fn ($attribute) => $attribute->getCustomAnnotation())
+            ->flatMap(fn($attribute) => $attribute->getCustomAnnotation())
             ->toArray();
     }
 
@@ -222,10 +230,10 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseDateFormatAttribute(ReflectionHelper $property): array
     {
         $format = collect($property->getAttribute(DateFormat::class)->parameters()[0])
-            ->map(fn ($format) => '"'.$format.'"')
+            ->map(fn($format) => '"' . $format . '"')
             ->join(', ', ' or ');
 
-        return ['x-date-format' => 'The value must match the format '.$format.'.'];
+        return ['x-date-format' => 'The value must match the format ' . $format . '.'];
     }
 
     /**
@@ -239,7 +247,7 @@ class CustomAnnotationKeyword extends Keyword
             $value = $value->name;
         }
 
-        return ['x-different-than' => 'The value must be different from the value of '.$value.'.'];
+        return ['x-different-than' => 'The value must be different from the value of ' . $value . '.'];
     }
 
     /**
@@ -249,7 +257,7 @@ class CustomAnnotationKeyword extends Keyword
     {
         $digits = $property->getAttribute(Digits::class)->parameters()[0];
 
-        return ['x-digits' => 'The value must have '.$digits.' digits.'];
+        return ['x-digits' => 'The value must have ' . $digits . ' digits.'];
     }
 
     /**
@@ -259,7 +267,7 @@ class CustomAnnotationKeyword extends Keyword
     {
         [$min, $max] = $property->getAttribute(DigitsBetween::class)->parameters();
 
-        return ['x-digits-between' => 'The value must have between '.$min.' and '.$max.' digits.'];
+        return ['x-digits-between' => 'The value must have between ' . $min . ' and ' . $max . ' digits.'];
     }
 
     /**
@@ -267,7 +275,7 @@ class CustomAnnotationKeyword extends Keyword
      */
     protected static function parseDistinctAttribute(ReflectionHelper $property): array
     {
-        return ['x-distinct' => 'The value of each '.$property->getName().' must be unique.'];
+        return ['x-distinct' => 'The value of each ' . $property->getName() . ' must be unique.'];
     }
 
     /**
@@ -276,10 +284,10 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseDoesntEndWithAttribute(ReflectionHelper $property): array
     {
         $values = collect($property->getAttribute(DoesntEndWith::class)->parameters()[0])
-            ->map(fn ($value) => '"'.$value.'"')
+            ->map(fn($value) => '"' . $value . '"')
             ->join(', ', ' or ');
 
-        return ['x-doesnt-end-with' => 'The value must not end with '.$values.'.'];
+        return ['x-doesnt-end-with' => 'The value must not end with ' . $values . '.'];
     }
 
     /**
@@ -288,10 +296,10 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseDoesntStartWithAttribute(ReflectionHelper $property): array
     {
         $values = collect($property->getAttribute(DoesntStartWith::class)->parameters()[0])
-            ->map(fn ($value) => '"'.$value.'"')
+            ->map(fn($value) => '"' . $value . '"')
             ->join(', ', ' or ');
 
-        return ['x-doesnt-start-with' => 'The value must not start with '.$values.'.'];
+        return ['x-doesnt-start-with' => 'The value must not start with ' . $values . '.'];
     }
 
     /**
@@ -300,10 +308,10 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseEndsWithAttribute(ReflectionHelper $property): array
     {
         $values = collect($property->getAttribute(EndsWith::class)->parameters()[0])
-            ->map(fn ($value) => '"'.$value.'"')
+            ->map(fn($value) => '"' . $value . '"')
             ->join(', ', ' or ');
 
-        return ['x-ends-with' => 'The value must end with '.$values.'.'];
+        return ['x-ends-with' => 'The value must end with ' . $values . '.'];
     }
 
     /**
@@ -322,8 +330,8 @@ class CustomAnnotationKeyword extends Keyword
         }
 
         return match (true) {
-            $property->isString() => ['x-greater-than' => 'The value must have more characters than the value of '.$value.'.'],
-            $property->isInteger() => ['x-greater-than' => 'The value must be greater than the value of '.$value.'.'],
+            $property->isString() => ['x-greater-than' => 'The value must have more characters than the value of ' . $value . '.'],
+            $property->isInteger() => ['x-greater-than' => 'The value must be greater than the value of ' . $value . '.'],
         };
     }
 
@@ -343,8 +351,8 @@ class CustomAnnotationKeyword extends Keyword
         }
 
         return match (true) {
-            $property->isString() => ['x-greater-than-or-equal-to' => 'The value must have at least as many characters as the value of '.$value.'.'],
-            $property->isInteger() => ['x-greater-than-or-equal-to' => 'The value must be greater than or equal to the value of '.$value.'.'],
+            $property->isString() => ['x-greater-than-or-equal-to' => 'The value must have at least as many characters as the value of ' . $value . '.'],
+            $property->isInteger() => ['x-greater-than-or-equal-to' => 'The value must be greater than or equal to the value of ' . $value . '.'],
         };
     }
 
@@ -364,8 +372,8 @@ class CustomAnnotationKeyword extends Keyword
         }
 
         return match (true) {
-            $property->isString() => ['x-less-than' => 'The value must have fewer characters than the value of '.$value.'.'],
-            $property->isInteger() => ['x-less-than' => 'The value must be less than the value of '.$value.'.'],
+            $property->isString() => ['x-less-than' => 'The value must have fewer characters than the value of ' . $value . '.'],
+            $property->isInteger() => ['x-less-than' => 'The value must be less than the value of ' . $value . '.'],
         };
     }
 
@@ -385,8 +393,8 @@ class CustomAnnotationKeyword extends Keyword
         }
 
         return match (true) {
-            $property->isString() => ['x-less-than-or-equal-to' => 'The value must have at most as many characters as the value of '.$value.'.'],
-            $property->isInteger() => ['x-less-than-or-equal-to' => 'The value must be less than or equal to the value of '.$value.'.'],
+            $property->isString() => ['x-less-than-or-equal-to' => 'The value must have at most as many characters as the value of ' . $value . '.'],
+            $property->isInteger() => ['x-less-than-or-equal-to' => 'The value must be less than or equal to the value of ' . $value . '.'],
         };
     }
 
@@ -396,9 +404,9 @@ class CustomAnnotationKeyword extends Keyword
     protected static function parseStartsWithAttribute(ReflectionHelper $property): array
     {
         $values = collect($property->getAttribute(StartsWith::class)->parameters()[0])
-            ->map(fn ($value) => '"'.$value.'"')
+            ->map(fn($value) => '"' . $value . '"')
             ->join(', ', ' or ');
 
-        return ['x-starts-with' => 'The value must start with '.$values.'.'];
+        return ['x-starts-with' => 'The value must start with ' . $values . '.'];
     }
 }
