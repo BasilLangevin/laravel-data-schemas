@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 
 class IntegerTransformer extends PropertyTransformer
 {

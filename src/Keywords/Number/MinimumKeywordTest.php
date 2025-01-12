@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\MinimumKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\NumberSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Between;
 use Spatie\LaravelData\Attributes\Validation\GreaterThanOrEqualTo;

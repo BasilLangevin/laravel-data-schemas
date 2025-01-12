@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\BooleanSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 
 class BooleanTransformer extends PropertyTransformer
 {

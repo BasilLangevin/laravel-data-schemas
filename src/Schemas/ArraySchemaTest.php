@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Types\ArraySchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ArraySchema;
 
 covers(ArraySchema::class);
 

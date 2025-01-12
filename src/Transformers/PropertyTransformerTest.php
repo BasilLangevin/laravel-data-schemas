@@ -1,8 +1,8 @@
 <?php
 
+use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 use BasilLangevin\LaravelDataSchemas\Transformers\PropertyTransformer;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
-use BasilLangevin\LaravelDataSchemas\Types\BooleanSchema;
 
 covers(PropertyTransformer::class);
 

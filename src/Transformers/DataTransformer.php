@@ -2,8 +2,8 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\ObjectSchema;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use ReflectionProperty;
 use Reflector;
 

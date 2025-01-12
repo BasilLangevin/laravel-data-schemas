@@ -3,8 +3,8 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\EnumKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
-use BasilLangevin\LaravelDataSchemas\Types\StringSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Accepted;
 use Spatie\LaravelData\Attributes\Validation\BooleanType;

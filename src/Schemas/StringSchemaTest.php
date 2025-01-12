@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Types\StringSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 
 covers(StringSchema::class);
 

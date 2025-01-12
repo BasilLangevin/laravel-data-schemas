@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\String\PatternKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\StringSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Alpha;
 use Spatie\LaravelData\Attributes\Validation\AlphaDash;

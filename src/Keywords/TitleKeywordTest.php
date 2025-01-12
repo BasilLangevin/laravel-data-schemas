@@ -4,7 +4,7 @@ use BasilLangevin\LaravelDataSchemas\Attributes\Title;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\TitleKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Data;
 

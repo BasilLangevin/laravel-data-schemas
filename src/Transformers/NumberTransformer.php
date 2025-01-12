@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\NumberSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
 
 class NumberTransformer extends PropertyTransformer
 {

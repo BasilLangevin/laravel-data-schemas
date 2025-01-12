@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
-use BasilLangevin\LaravelDataSchemas\Types\ObjectSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Data;
 

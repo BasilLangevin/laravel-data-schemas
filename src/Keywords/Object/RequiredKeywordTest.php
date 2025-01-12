@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\RequiredKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Present;
 use Spatie\LaravelData\Attributes\Validation\Required;

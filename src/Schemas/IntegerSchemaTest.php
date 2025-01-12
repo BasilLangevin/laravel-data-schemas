@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 
 covers(IntegerSchema::class);
 

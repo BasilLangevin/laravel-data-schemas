@@ -4,7 +4,7 @@ use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\CustomAnnotationKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\StringSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\After;

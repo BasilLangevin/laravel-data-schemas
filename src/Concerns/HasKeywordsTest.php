@@ -6,8 +6,8 @@ use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
 use Illuminate\Support\Collection;
 
 covers(HasKeywords::class);

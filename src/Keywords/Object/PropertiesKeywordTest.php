@@ -3,8 +3,8 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\PropertiesKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\BooleanSchema;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Data;
 

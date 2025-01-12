@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Types\BooleanSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 
 covers(BooleanSchema::class);
 

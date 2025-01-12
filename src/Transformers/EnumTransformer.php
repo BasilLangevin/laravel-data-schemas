@@ -2,9 +2,9 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
-use BasilLangevin\LaravelDataSchemas\Types\StringSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 
 class EnumTransformer extends PropertyTransformer
 {

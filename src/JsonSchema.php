@@ -2,8 +2,8 @@
 
 namespace BasilLangevin\LaravelDataSchemas;
 
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Transformers\DataTransformer;
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
 use ReflectionClass;
 
 class JsonSchema

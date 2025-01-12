@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\MultipleOfKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\NumberSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\MultipleOf;
 use Spatie\LaravelData\Data;

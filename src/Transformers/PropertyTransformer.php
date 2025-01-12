@@ -2,7 +2,7 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Transformers;
 
-use BasilLangevin\LaravelDataSchemas\Types\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use Reflector;
 
 abstract class PropertyTransformer extends Transformer

@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Facades\JsonSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Number\MaximumKeyword;
-use BasilLangevin\LaravelDataSchemas\Types\IntegerSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Between;
 use Spatie\LaravelData\Attributes\Validation\LessThanOrEqualTo;
