@@ -1,6 +1,6 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Transformers;
+namespace BasilLangevin\LaravelDataSchemas\Support;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

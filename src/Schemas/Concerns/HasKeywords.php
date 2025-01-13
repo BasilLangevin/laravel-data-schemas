@@ -1,6 +1,6 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Concerns;
+namespace BasilLangevin\LaravelDataSchemas\Schemas\Concerns;
 
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;

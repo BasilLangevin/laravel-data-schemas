@@ -2,9 +2,9 @@
 
 namespace BasilLangevin\LaravelDataSchemas;
 
+use BasilLangevin\LaravelDataSchemas\Actions\TransformDataClassToSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
-use BasilLangevin\LaravelDataSchemas\Transformers\DataTransformer;
-use ReflectionClass;
+use BasilLangevin\LaravelDataSchemas\Support\ClassWrapper;
 
 class JsonSchema
 {
@@ -38,6 +38,6 @@ class JsonSchema
      */
     protected function build(): Schema
     {
-        return DataTransformer::transform(new ReflectionClass($this->dataClass));
+        return TransformDataClassToSchema::run(ClassWrapper::make($this->dataClass));
     }
 }

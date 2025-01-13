@@ -1,6 +1,6 @@
 <?php
 
-use BasilLangevin\LaravelDataSchemas\Transformers\DocBlockParser;
+use BasilLangevin\LaravelDataSchemas\Support\DocBlockParser;
 
 covers(DocBlockParser::class);
 

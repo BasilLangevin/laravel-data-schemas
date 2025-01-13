@@ -4,7 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Attributes\Description;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
-use BasilLangevin\LaravelDataSchemas\Transformers\DocBlockParser;
+use BasilLangevin\LaravelDataSchemas\Support\DocBlockParser;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 use ReflectionClass;

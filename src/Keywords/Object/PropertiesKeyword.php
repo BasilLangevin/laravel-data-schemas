@@ -4,7 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Keywords\Object;
 
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
-use BasilLangevin\LaravelDataSchemas\Transformers\PropertyTransformer;
+use BasilLangevin\LaravelDataSchemas\Transformers\Properties\PropertyTransformer;
 use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 
