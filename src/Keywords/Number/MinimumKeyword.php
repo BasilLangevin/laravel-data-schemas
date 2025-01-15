@@ -2,17 +2,11 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\Number;
 
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\Between;
-use Spatie\LaravelData\Attributes\Validation\GreaterThanOrEqualTo;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\MinDigits;
-use Spatie\LaravelData\Attributes\Validation\Size;
 
-class MinimumKeyword extends Keyword
+class MinimumKeyword extends Keyword implements HandlesMultipleInstances
 {
     public function __construct(protected int|float $value) {}
 
@@ -33,89 +27,10 @@ class MinimumKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the reflector, or throw
-     * an exception if the schema should not have this keyword.
-     *
-     * @throws KeywordValueCouldNotBeInferred
+     * Apply the keyword to the schema for multiple values.
      */
-    public static function parse(ReflectionHelper $property): int|float
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        $minimums = collect([
-            self::parseBetweenAttribute($property),
-            self::parseGreaterThanOrEqualToAttribute($property),
-            self::parseMinAttribute($property),
-            self::parseMinDigitsAttribute($property),
-            self::parseSizeAttribute($property),
-        ])->filter();
-
-        if ($minimums->isEmpty()) {
-            throw new KeywordValueCouldNotBeInferred;
-        }
-
-        return $minimums->max();
-    }
-
-    /**
-     * Parse the minimum value from the between attribute.
-     */
-    protected static function parseBetweenAttribute(ReflectionHelper $property): int|float|null
-    {
-        if (! $attribute = $property->getAttribute(Between::class)) {
-            return null;
-        }
-
-        return $attribute->parameters()[0];
-    }
-
-    /**
-     * Parse the minimum value from the greater than or equal to attribute.
-     */
-    protected static function parseGreaterThanOrEqualToAttribute(ReflectionHelper $property): int|float|null
-    {
-        if (! $attribute = $property->getAttribute(GreaterThanOrEqualTo::class)) {
-            return null;
-        }
-
-        if (! is_numeric($attribute->parameters()[0])) {
-            return null;
-        }
-
-        return $attribute->parameters()[0];
-    }
-
-    /**
-     * Parse the minimum value from the min attribute.
-     */
-    protected static function parseMinAttribute(ReflectionHelper $property): int|float|null
-    {
-        if (! $attribute = $property->getAttribute(Min::class)) {
-            return null;
-        }
-
-        return $attribute->parameters()[0];
-    }
-
-    /**
-     * Parse the minimum value from the min digits attribute.
-     */
-    protected static function parseMinDigitsAttribute(ReflectionHelper $property): int|float|null
-    {
-        if (! $attribute = $property->getAttribute(MinDigits::class)) {
-            return null;
-        }
-
-        return 10 ** ($attribute->parameters()[0] - 1);
-    }
-
-    /**
-     * Parse the minimum value from the size attribute.
-     */
-    protected static function parseSizeAttribute(ReflectionHelper $property): int|float|null
-    {
-        if (! $attribute = $property->getAttribute(Size::class)) {
-            return null;
-        }
-
-        return $attribute->parameters()[0];
+        return $schema->merge(['minimum' => $instances->max->get()]);
     }
 }

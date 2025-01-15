@@ -8,6 +8,13 @@ covers(BooleanTypeRuleConfigurator::class);
 
 uses(TestsSchemaTransformation::class);
 
+it('applies the enum keyword to a boolean schema')
+    ->expect(fn () => $this->class->addBooleanProperty('test', [BooleanType::class]))
+    ->toHaveSchema('test', [
+        'type' => 'boolean',
+        'enum' => [false, true],
+    ]);
+
 it('applies the enum keyword to an integer schema')
     ->expect(fn () => $this->class->addIntegerProperty('test', [BooleanType::class]))
     ->toHaveSchema('test', [

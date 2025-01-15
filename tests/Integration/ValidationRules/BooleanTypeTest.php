@@ -55,7 +55,7 @@ it('sets the enum keyword when applied to a boolean property', function () {
 
     expect(Arr::get($schema, 'properties.testParameter.type'))->toBe(DataType::Boolean->value);
     expect(Arr::get($schema, 'properties.testParameter.enum'))->toBe([
-        true,
         false,
+        true,
     ]);
 });

@@ -2,13 +2,11 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\Object;
 
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
-use BasilLangevin\LaravelDataSchemas\Transformers\Properties\PropertyTransformer;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 
-class PropertiesKeyword extends Keyword
+class PropertiesKeyword extends Keyword implements HandlesMultipleInstances
 {
     public function __construct(protected array $value) {}
 
@@ -25,28 +23,32 @@ class PropertiesKeyword extends Keyword
      */
     public function apply(Collection $schema): Collection
     {
-        $properties = collect($this->get())->mapWithKeys(function ($property) {
-            return [$property->name() => $property->toArray()];
-        })->all();
+        $properties = self::resolveProperties(
+            collect($this->get())
+        );
 
         return $schema->merge(compact('properties'));
     }
 
     /**
-     * Infer the value of the keyword from the object, or return
-     * null if the object schema should not have this keyword.
+     * Apply multiple instances of the keyword to the schema.
      */
-    public static function parse(ReflectionHelper $reflector): array
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        $properties = $reflector->properties()
-            ->map(function (ReflectionHelper $property) {
-                return PropertyTransformer::transform($property);
-            });
+        $properties = self::resolveProperties(
+            $instances->flatMap->get()->unique(fn ($property, $name) => $name)
+        );
 
-        if ($properties->isEmpty()) {
-            throw new KeywordValueCouldNotBeInferred;
-        }
+        return $schema->merge(compact('properties'));
+    }
 
-        return $properties->toArray();
+    /**
+     * Resolve the properties from the given collection.
+     */
+    protected static function resolveProperties(Collection $properties): array
+    {
+        return $properties->mapWithKeys(function ($property) {
+            return [$property->name() => $property->toArray()];
+        })->all();
     }
 }

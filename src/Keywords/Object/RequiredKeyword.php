@@ -2,14 +2,11 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\Object;
 
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\Present;
-use Spatie\LaravelData\Attributes\Validation\Required;
 
-class RequiredKeyword extends Keyword
+class RequiredKeyword extends Keyword implements HandlesMultipleInstances
 {
     public function __construct(protected array $value) {}
 
@@ -32,62 +29,12 @@ class RequiredKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the reflector, or throw
-     * an exception if the schema should not have this keyword.
-     *
-     * @throws KeywordValueCouldNotBeInferred
+     * Apply multiple instances of the keyword to the schema.
      */
-    public static function parse(ReflectionHelper $reflector): array
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        $result = collect([
-            ...self::notNullProperties($reflector),
-            ...self::presentProperties($reflector),
-            ...self::requiredProperties($reflector),
-        ])->unique();
-
-        return $result->isEmpty()
-            ? throw new KeywordValueCouldNotBeInferred
-            : $result->toArray();
-    }
-
-    /**
-     * Get the properties that are not nullable.
-     */
-    protected static function notNullProperties(ReflectionHelper $reflector): array
-    {
-        return $reflector->properties()
-            ->filter(function (ReflectionHelper $property) {
-                $type = $property->getType();
-
-                return $type !== null && ! $type->allowsNull();
-            })
-            ->map->getName()
-            ->toArray();
-    }
-
-    /**
-     * Get the properties that have the Present attribute.
-     */
-    protected static function presentProperties(ReflectionHelper $reflector): array
-    {
-        return $reflector->properties()
-            ->filter(function (ReflectionHelper $property) {
-                return $property->hasAttribute(Present::class);
-            })
-            ->map->getName()
-            ->toArray();
-    }
-
-    /**
-     * Get the properties that have the Required attribute.
-     */
-    protected static function requiredProperties(ReflectionHelper $reflector): array
-    {
-        return $reflector->properties()
-            ->filter(function (ReflectionHelper $property) {
-                return $property->hasAttribute(Required::class);
-            })
-            ->map->getName()
-            ->toArray();
+        return $schema->merge([
+            'required' => $instances->flatMap->get()->unique()->values()->all(),
+        ]);
     }
 }

@@ -7,6 +7,7 @@ use BasilLangevin\LaravelDataSchemas\Support\Concerns\AccessesDocBlock;
 use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 use Illuminate\Support\Collection;
 use ReflectionClass;
+use ReflectionMethod;
 use ReflectionProperty;
 use Reflector;
 
@@ -53,14 +54,30 @@ class ClassWrapper implements EntityWrapper
     }
 
     /**
+     * Check if the class has a constructor.
+     */
+    public function hasConstructor(): bool
+    {
+        return $this->class->hasMethod('__construct');
+    }
+
+    /**
+     * Get the constructor of the class.
+     */
+    public function getConstructor(): ?ReflectionMethod
+    {
+        return $this->class->getMethod('__construct');
+    }
+
+    /**
      * Get the doc block for the class' __construct method.
      */
     public function getConstructorDocBlock(): ?DocBlockParser
     {
-        if (! $this->class->hasMethod('__construct')) {
+        if (! $this->hasConstructor()) {
             return null;
         }
 
-        return DocBlockParser::make($this->class->getMethod('__construct')->getDocComment());
+        return DocBlockParser::make($this->getConstructor()->getDocComment());
     }
 }

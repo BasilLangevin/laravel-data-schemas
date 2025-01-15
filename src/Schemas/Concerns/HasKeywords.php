@@ -4,6 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Schemas\Concerns;
 
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -23,8 +24,10 @@ trait HasKeywords
 
     /**
      * Get the instance of the given keyword.
+     *
+     * @return array<int, Keyword>
      */
-    private function getKeywordInstance(string $name): Keyword
+    private function getKeywordInstances(string $name): array
     {
         if (is_subclass_of($name, Keyword::class)) {
             $name = $name::method();
@@ -96,7 +99,11 @@ trait HasKeywords
             $keyword = $this->getKeywordByMethod($name);
         }
 
-        $this->keywordInstances[$name] = new $keyword(...$arguments);
+        if (! $this->hasKeyword($name)) {
+            $this->keywordInstances[$name] = [];
+        }
+
+        $this->keywordInstances[$name][] = new $keyword(...$arguments);
 
         return $this;
     }
@@ -106,7 +113,17 @@ trait HasKeywords
      */
     public function getKeyword(string $name): mixed
     {
-        return $this->getKeywordInstance($name)->get();
+        $instances = $this->getKeywordInstances($name);
+
+        $result = collect($instances)->map(function ($instance) {
+            return $instance->get();
+        });
+
+        if ($result->count() === 1) {
+            return $result->first();
+        }
+
+        return $result;
     }
 
     /**
@@ -114,7 +131,17 @@ trait HasKeywords
      */
     public function applyKeyword(string $name, Collection $schema): Collection
     {
-        return $this->getKeywordInstance($name)->apply($schema);
+        $instances = collect($this->getKeywordInstances($name));
+
+        if ($instances->count() === 1) {
+            return $instances->first()->apply($schema);
+        }
+
+        if (! is_subclass_of($name, HandlesMultipleInstances::class)) {
+            return $instances->last()->apply($schema);
+        }
+
+        return $name::applyMultiple($schema, $instances);
     }
 
     /**

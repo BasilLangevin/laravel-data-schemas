@@ -59,6 +59,18 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
     }
 
     /**
+     * Apply the given callback when the condition is true.
+     */
+    public function when(bool $condition, callable $callback): self
+    {
+        if ($condition) {
+            $callback($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Convert the schema to an array.
      */
     public function toArray(): array

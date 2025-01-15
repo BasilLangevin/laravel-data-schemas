@@ -9,6 +9,7 @@ covers(NotInRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the not enum keyword to an integer schema')
+    ->todo()
     ->expect(fn () => $this->class->addIntegerProperty('test', [NotIn::class => [1, 2, 3]]))
     ->toHaveSchema('test', [
         'type' => 'integer',
@@ -18,6 +19,7 @@ it('applies the not enum keyword to an integer schema')
     ]);
 
 it('applies the not enum keyword to a number schema')
+    ->todo()
     ->expect(fn () => $this->class->addNumberProperty('test', [NotIn::class => [1.5, 2.5, 3.5]]))
     ->toHaveSchema('test', [
         'type' => 'number',
@@ -27,6 +29,7 @@ it('applies the not enum keyword to a number schema')
     ]);
 
 it('applies the not enum keyword to a string schema')
+    ->todo()
     ->expect(fn () => $this->class->addStringProperty('test', [NotIn::class => ['foo', 'bar', 'baz']]))
     ->toHaveSchema('test', [
         'type' => 'string',

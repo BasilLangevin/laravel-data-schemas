@@ -2,6 +2,7 @@
 
 use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
 use BasilLangevin\LaravelDataSchemas\Attributes\Title;
+use BasilLangevin\LaravelDataSchemas\Support\AttributeWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\ClassWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
 
@@ -34,8 +35,8 @@ it('can get an attribute', function () {
     $reflector = ClassWrapper::make(TestClassWrapperClass::class);
 
     expect($reflector->getAttribute(Title::class))
-        ->toBeInstanceOf(Title::class)
-        ->getTitle()->toBe('Test');
+        ->toBeInstanceOf(AttributeWrapper::class)
+        ->getValue()->toBe('Test');
 });
 
 it('can get multiple attributes of the same type', function () {
@@ -44,7 +45,7 @@ it('can get multiple attributes of the same type', function () {
     expect($reflector->getAttribute(CustomAnnotation::class))
         ->toBeCollection()
         ->toHaveCount(2)
-        ->each->toBeInstanceOf(CustomAnnotation::class);
+        ->each->toBeInstanceOf(AttributeWrapper::class);
 });
 
 it('can get its properties', function () {

@@ -5,6 +5,7 @@ use BasilLangevin\LaravelDataSchemas\Attributes\Title;
 use BasilLangevin\LaravelDataSchemas\Support\AttributeWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\ClassWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
+use BasilLangevin\LaravelDataSchemas\Tests\Support\Enums\TestStringEnum;
 
 covers(PropertyWrapper::class);
 
@@ -20,6 +21,8 @@ class TestPropertyWrapperClass
     public float $testFloat;
 
     public int $testInt;
+
+    public TestStringEnum $testEnum;
 
     protected string $hidden;
 
@@ -51,6 +54,18 @@ test('isBoolean returns false if the reflected property is not a boolean', funct
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
     expect($reflector->isBoolean())->toBe(false);
+});
+
+it('can check if the reflected property is an enum', function () {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'testEnum');
+
+    expect($reflector->isEnum())->toBe(true);
+});
+
+test('isEnum returns false if the reflected property is not an enum', function () {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
+
+    expect($reflector->isEnum())->toBe(false);
 });
 
 it('can check if the reflected property is a float', function () {
@@ -127,16 +142,16 @@ it('can get its siblings', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
     expect($reflector->siblings())->toBeCollection()
-        ->toHaveCount(4)
+        ->toHaveCount(5)
         ->each->toBeInstanceOf(PropertyWrapper::class);
 
     expect($reflector->siblings()->map->getName()->toArray())
-        ->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt']);
+        ->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt', 'testEnum']);
 });
 
 it('can get its sibling names', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
     expect($reflector->siblingNames())->toBeCollection();
-    expect($reflector->siblingNames()->toArray())->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt']);
+    expect($reflector->siblingNames()->toArray())->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt', 'testEnum']);
 });

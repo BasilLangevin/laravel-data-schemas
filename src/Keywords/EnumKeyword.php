@@ -2,34 +2,13 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
+use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\Accepted;
-use Spatie\LaravelData\Attributes\Validation\BooleanType;
-use Spatie\LaravelData\Attributes\Validation\Declined;
 use Spatie\LaravelData\Attributes\Validation\Enum;
-use Spatie\LaravelData\Attributes\Validation\In;
 
-class EnumKeyword extends Keyword
+class EnumKeyword extends Keyword implements HandlesMultipleInstances
 {
-    /**
-     * The enum values to apply when the given attribute is present.
-     */
-    const RULE_VALUES = [
-        Accepted::class => [
-            'string' => ['yes', 'on', '1', 'true'],
-        ],
-        BooleanType::class => [
-            'boolean' => [true, false],
-            'integer' => [0, 1],
-            'string' => ['0', '1'],
-        ],
-        Declined::class => [
-            'string' => ['no', 'off', '0', 'false'],
-        ],
-    ];
-
     public function __construct(protected string|array $value)
     {
         if (is_array($value)) {
@@ -92,7 +71,7 @@ class EnumKeyword extends Keyword
                 return $value->value;
             }
 
-            throw new \Exception('Non-backed enum values are not supported.');
+            throw new SchemaConfigurationException('Non-backed enum values are not supported.');
         })->toArray();
     }
 
@@ -116,79 +95,22 @@ class EnumKeyword extends Keyword
         })->toArray();
     }
 
-    /**
-     * Infer the value of the keyword from the reflector, or throw
-     * an exception if the schema should not have this keyword.
-     *
-     * @throws KeywordValueCouldNotBeInferred
-     */
-    public static function parse(ReflectionHelper $property): string|array
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        if ($property->hasAttribute(Enum::class)) {
-            return static::parseEnumAttribute($property);
+        $values = $instances->map(fn ($instance) => $instance->getValues());
+
+        $commonValues = $values->skip(1)
+            ->reduce(function (Collection $result, array $instanceValues) {
+                return $result->intersect($instanceValues);
+            }, collect($values->first()))
+            ->values();
+
+        if ($commonValues->isEmpty()) {
+            throw new SchemaConfigurationException('Multiple enums were set with no overlapping values.');
         }
 
-        if ($property->hasAttribute(In::class)) {
-            return static::parseInAttribute($property);
-        }
-
-        if (static::hasDefinedRule($property)) {
-            return static::parseDefinedRule($property) ?? throw new KeywordValueCouldNotBeInferred;
-        }
-
-        throw new KeywordValueCouldNotBeInferred;
-    }
-
-    /**
-     * Parse the Enum attribute.
-     */
-    protected static function parseEnumAttribute(ReflectionHelper $property): string|array
-    {
-        $enum = $property->getAttribute(Enum::class);
-        $reflection = new \ReflectionObject($enum);
-
-        return $reflection->getProperty('enum')->getValue($enum);
-    }
-
-    /**
-     * Parse the In attribute.
-     */
-    protected static function parseInAttribute(ReflectionHelper $property): string|array
-    {
-        $in = $property->getAttribute(In::class);
-        $reflection = new \ReflectionObject($in);
-
-        return $reflection->getProperty('values')->getValue($in)[0];
-    }
-
-    /**
-     * Get the first Rule attribute that is defined in the RULE_VALUES array.
-     */
-    protected static function getDefinedRule(ReflectionHelper $property): ?array
-    {
-        return collect(static::RULE_VALUES)
-            ->first(fn ($v, $attribute) => $property->hasAttribute($attribute));
-    }
-
-    /**
-     * Check if the property has an attribute that is defined in the RULE_VALUES array.
-     */
-    protected static function hasDefinedRule(ReflectionHelper $property): bool
-    {
-        return static::getDefinedRule($property) !== null;
-    }
-
-    /**
-     * Parse the defined rule.
-     */
-    protected static function parseDefinedRule(ReflectionHelper $property): ?array
-    {
-        return collect(static::getDefinedRule($property))
-            ->first(function ($v, $type) use ($property) {
-                // User-defined methods are case insensitive, so this doesn't need mutation testing.
-                $method = 'is'.ucfirst($type); // @pest-mutate-ignore
-
-                return $property->{$method}();
-            });
+        return $schema->merge([
+            'enum' => $commonValues->toArray(),
+        ]);
     }
 }

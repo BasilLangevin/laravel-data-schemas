@@ -2,13 +2,11 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\Number;
 
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 
-class ExclusiveMinimumKeyword extends Keyword
+class ExclusiveMinimumKeyword extends Keyword implements HandlesMultipleInstances
 {
     public function __construct(protected int|float $value) {}
 
@@ -29,21 +27,10 @@ class ExclusiveMinimumKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the reflector, or throw
-     * an exception if the schema should not have this keyword.
-     *
-     * @throws KeywordValueCouldNotBeInferred
+     * Apply multiple instances of the keyword to the given schema.
      */
-    public static function parse(ReflectionHelper $property): int|float
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        if (! $attribute = $property->getAttribute(GreaterThan::class)) {
-            throw new KeywordValueCouldNotBeInferred;
-        }
-
-        if (! is_numeric($attribute->parameters()[0])) {
-            throw new KeywordValueCouldNotBeInferred;
-        }
-
-        return $attribute->parameters()[0];
+        return $schema->merge(['exclusiveMinimum' => $instances->max->get()]);
     }
 }

@@ -3,11 +3,11 @@
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Concerns\HasKeywords;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
 use Illuminate\Support\Collection;
 
 covers(HasKeywords::class);
@@ -31,10 +31,15 @@ class TheTestKeyword extends Keyword
             'result' => 'I was successfully applied',
         ]);
     }
+}
 
-    public static function parse(ReflectionHelper $reflector): ?string
+class TheHandlesMultipleInstancesTestKeyword extends TheTestKeyword implements HandlesMultipleInstances
+{
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        return 'test';
+        return $schema->merge([
+            'result' => 'I was successfully applied multiple times',
+        ]);
     }
 }
 
@@ -43,6 +48,7 @@ class HasKeywordsTestSchema extends Schema
     public static array $keywords = [
         DescriptionKeyword::class,
         TheTestKeyword::class,
+        TheHandlesMultipleInstancesTestKeyword::class,
     ];
 }
 
@@ -52,12 +58,15 @@ it('can call a keyword method')
     ->getDescription()
     ->toBe('This is a description');
 
-it('can call a keyword method multiple times to replace the existing value')
+test('calling a keyword method multiple times adds multiple instances of the keyword')
     ->expect(HasKeywordsTestSchema::make())
     ->description('This is a description')
     ->description('This is a new description')
-    ->getDescription()
-    ->toBe('This is a new description');
+    ->getDescription()->toArray()
+    ->toBe([
+        'This is a description',
+        'This is a new description',
+    ]);
 
 it('can call a keyword getter method')
     ->expect(HasKeywordsTestSchema::make())
@@ -155,3 +164,35 @@ it('can apply a keyword', function ($name) {
         TheTestKeyword::class,
         TheTestKeyword::method(),
     ]);
+
+it('applies the last instance of a keyword when multiple instances are set and the keyword does not implement HandlesMultipleInstances', function () {
+    $schema = HasKeywordsTestSchema::make();
+
+    $schema->theTest('This is a description');
+    $schema->theTest('This is a new description');
+
+    $result = $schema->applyKeyword(TheTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]));
+
+    expect($result)->toEqual(collect([
+        'type' => DataType::String->value,
+        'result' => 'I was successfully applied',
+    ]));
+});
+
+it('can apply multiple instances of a keyword when the keyword implements HandlesMultipleInstances', function () {
+    $schema = HasKeywordsTestSchema::make();
+
+    $schema->theHandlesMultipleInstancesTest('This is a description');
+    $schema->theHandlesMultipleInstancesTest('This is a new description');
+
+    $result = $schema->applyKeyword(TheHandlesMultipleInstancesTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]));
+
+    expect($result)->toEqual(collect([
+        'type' => DataType::String->value,
+        'result' => 'I was successfully applied multiple times',
+    ]));
+});

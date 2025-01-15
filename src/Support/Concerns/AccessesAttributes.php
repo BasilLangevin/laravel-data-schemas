@@ -24,8 +24,18 @@ trait AccessesAttributes
         return $this->attributes($name)->isNotEmpty();
     }
 
-    public function getAttribute(string $name): ?AttributeWrapper
+    public function getAttribute(string $name): AttributeWrapper|Collection|null
     {
-        return $this->attributes($name)->first();
+        $attributes = $this->attributes($name);
+
+        if ($attributes->isEmpty()) {
+            return null;
+        }
+
+        if ($attributes->count() === 1) {
+            return $attributes->first();
+        }
+
+        return $attributes;
     }
 }

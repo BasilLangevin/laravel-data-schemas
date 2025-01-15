@@ -14,5 +14,5 @@ interface HasAttributes
 
     public function hasAttribute(string $name): bool;
 
-    public function getAttribute(string $name): ?AttributeWrapper;
+    public function getAttribute(string $name): AttributeWrapper|Collection|null;
 }

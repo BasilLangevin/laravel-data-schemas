@@ -16,9 +16,12 @@ class TransformDataClassToSchema
 
     public function handle(ClassWrapper $class)
     {
+        $properties = $this->getProperties($class);
+        $required = $this->getRequired($class);
+
         return ObjectSchema::make($class->getName())
-            ->properties($this->getProperties($class))
-            ->required($this->getRequired($class))
+            ->when(count($properties), fn (Schema $schema) => $schema->properties($properties))
+            ->when(count($required), fn (Schema $schema) => $schema->required($required))
             ->pipe(fn (Schema $schema) => ApplyDecorationsToSchema::run($schema, $class))
             ->pipe(fn (Schema $schema) => ApplyRuleConfigurationsToSchema::run($schema, $class));
     }

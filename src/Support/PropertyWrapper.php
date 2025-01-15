@@ -63,6 +63,14 @@ class PropertyWrapper implements EntityWrapper
     }
 
     /**
+     * Determine if the reflected property is an enum.
+     */
+    public function isEnum(): bool
+    {
+        return enum_exists($this->property->getType()->getName());
+    }
+
+    /**
      * Determine if the reflected property is a float.
      */
     public function isFloat(): bool
@@ -108,6 +116,22 @@ class PropertyWrapper implements EntityWrapper
     public function getName(): string
     {
         return $this->property->getName();
+    }
+
+    /**
+     * Determine if the property has a default value.
+     */
+    public function hasDefaultValue(): bool
+    {
+        return $this->property->hasDefaultValue();
+    }
+
+    /**
+     * Get the default value of the property.
+     */
+    public function getDefaultValue(): mixed
+    {
+        return $this->property->getDefaultValue();
     }
 
     /**

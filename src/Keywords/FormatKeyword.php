@@ -3,42 +3,12 @@
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
 use BasilLangevin\LaravelDataSchemas\Enums\Format;
-use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordValueCouldNotBeInferred;
-use BasilLangevin\LaravelDataSchemas\Transformers\ReflectionHelper;
+use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\ActiveUrl;
-use Spatie\LaravelData\Attributes\Validation\After;
-use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
-use Spatie\LaravelData\Attributes\Validation\Before;
-use Spatie\LaravelData\Attributes\Validation\BeforeOrEqual;
-use Spatie\LaravelData\Attributes\Validation\Date;
-use Spatie\LaravelData\Attributes\Validation\DateEquals;
-use Spatie\LaravelData\Attributes\Validation\Email;
-use Spatie\LaravelData\Attributes\Validation\IPv4;
-use Spatie\LaravelData\Attributes\Validation\IPv6;
-use Spatie\LaravelData\Attributes\Validation\Url;
-use Spatie\LaravelData\Attributes\Validation\Uuid;
 
-class FormatKeyword extends Keyword
+class FormatKeyword extends Keyword implements HandlesMultipleInstances
 {
-    /**
-     * The formats that can be inferred from validation rules.
-     */
-    const RULE_FORMATS = [
-        ActiveUrl::class => Format::Uri,
-        After::class => Format::DateTime,
-        AfterOrEqual::class => Format::DateTime,
-        Before::class => Format::DateTime,
-        BeforeOrEqual::class => Format::DateTime,
-        Date::class => Format::DateTime,
-        DateEquals::class => Format::DateTime,
-        Email::class => Format::Email,
-        IPv4::class => Format::IPv4,
-        IPv6::class => Format::IPv6,
-        Url::class => Format::Uri,
-        Uuid::class => Format::Uuid,
-    ];
-
     public function __construct(protected string|Format $value) {}
 
     /**
@@ -62,21 +32,14 @@ class FormatKeyword extends Keyword
     }
 
     /**
-     * Infer the value of the keyword from the reflector, or throw
-     * an exception if the schema should not have this keyword.
-     *
-     * @throws KeywordValueCouldNotBeInferred
+     * Apply the format keyword to a schema when multiple instances are applied.
      */
-    public static function parse(ReflectionHelper $property): string|Format
+    public static function applyMultiple(Collection $schema, Collection $instances): Collection
     {
-        if (! $property->isString()) {
-            throw new KeywordValueCouldNotBeInferred;
+        if ($instances->map->get()->unique()->count() > 1) {
+            throw new SchemaConfigurationException('A schema cannot have more than one format.');
         }
 
-        $format = collect(self::RULE_FORMATS)
-            ->filter(fn (Format $format, string $rule) => $property->hasAttribute($rule))
-            ->first()?->value;
-
-        return $format ?? throw new KeywordValueCouldNotBeInferred;
+        return $instances->first()->apply($schema);
     }
 }
