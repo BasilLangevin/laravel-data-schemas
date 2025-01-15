@@ -1,8 +1,9 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Decoration;
 
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 

@@ -1,10 +1,11 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Decoration;
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 
-class ConstKeyword extends Keyword
+class DefaultKeyword extends Keyword
 {
     public function __construct(protected mixed $value) {}
 
@@ -22,7 +23,7 @@ class ConstKeyword extends Keyword
     public function apply(Collection $schema): Collection
     {
         return $schema->merge([
-            'const' => $this->get(),
+            'default' => $this->get(),
         ]);
     }
 }

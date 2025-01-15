@@ -1,10 +1,9 @@
 <?php
 
-use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\Validation\DateEquals;
+use BasilLangevin\LaravelDataSchemas\RuleConfigurators\DateEqualsRuleConfigurator;
 use BasilLangevin\LaravelDataSchemas\Tests\Support\Argument;
 use BasilLangevin\LaravelDataSchemas\Tests\TestsSchemaTransformation;
-use BasilLangevin\LaravelDataSchemas\RuleConfigurators\DateEqualsRuleConfigurator;
+use Spatie\LaravelData\Attributes\Validation\DateEquals;
 
 covers(DateEqualsRuleConfigurator::class);
 

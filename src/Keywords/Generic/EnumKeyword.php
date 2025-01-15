@@ -1,11 +1,11 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Generic;
 
 use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Attributes\Validation\Enum;
 
 class EnumKeyword extends Keyword implements HandlesMultipleInstances
 {

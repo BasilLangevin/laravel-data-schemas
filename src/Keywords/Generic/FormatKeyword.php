@@ -1,10 +1,11 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Generic;
 
 use BasilLangevin\LaravelDataSchemas\Enums\Format;
 use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 
 class FormatKeyword extends Keyword implements HandlesMultipleInstances

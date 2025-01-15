@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 
 covers(Schema::class);

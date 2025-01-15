@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\ConstKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Generic\ConstKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 
 covers(ConstKeyword::class);

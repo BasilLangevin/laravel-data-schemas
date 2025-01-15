@@ -3,12 +3,12 @@
 namespace BasilLangevin\LaravelDataSchemas\Schemas;
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\ConstKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\TitleKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\FormatKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\DefaultKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\DescriptionKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\CustomAnnotationKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\CustomAnnotationKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\TitleKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Generic\ConstKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Generic\DefaultKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Generic\FormatKeyword;
 
 class ArraySchema extends Schema
 {

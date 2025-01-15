@@ -1,12 +1,13 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Decoration;
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 
-class DefaultKeyword extends Keyword
+class TitleKeyword extends Keyword
 {
-    public function __construct(protected mixed $value) {}
+    public function __construct(protected string $value) {}
 
     /**
      * Get the value of the keyword.
@@ -22,7 +23,7 @@ class DefaultKeyword extends Keyword
     public function apply(Collection $schema): Collection
     {
         return $schema->merge([
-            'default' => $this->get(),
+            'title' => $this->get(),
         ]);
     }
 }
