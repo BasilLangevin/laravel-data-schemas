@@ -14,14 +14,14 @@ use BasilLangevin\LaravelDataSchemas\Support\AttributeWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
 
-class MaxRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberSchema, ConfiguresObjectSchema, ConfiguresStringSchema
+class ProhibitedRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberSchema, ConfiguresObjectSchema, ConfiguresStringSchema
 {
     public static function configureArraySchema(
         ArraySchema $schema,
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): ArraySchema {
-        return $schema->maxItems($attribute->getValue());
+        return $schema->maxItems(0);
     }
 
     public static function configureNumberSchema(
@@ -29,7 +29,7 @@ class MaxRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberSche
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): NumberSchema {
-        return $schema->maximum($attribute->getValue());
+        return $schema->const(0);
     }
 
     public static function configureObjectSchema(
@@ -37,7 +37,7 @@ class MaxRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberSche
         EntityWrapper $entity,
         AttributeWrapper $attribute
     ): ObjectSchema {
-        return $schema->maxProperties($attribute->getValue());
+        return $schema->maxProperties(0);
     }
 
     public static function configureStringSchema(
@@ -45,6 +45,6 @@ class MaxRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberSche
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): StringSchema {
-        return $schema->maxLength($attribute->getValue());
+        return $schema->maxLength(0);
     }
 }

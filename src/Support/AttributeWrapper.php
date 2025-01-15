@@ -5,6 +5,8 @@ namespace BasilLangevin\LaravelDataSchemas\Support;
 use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
 use BasilLangevin\LaravelDataSchemas\Attributes\Description;
 use BasilLangevin\LaravelDataSchemas\Attributes\Title;
+use Spatie\LaravelData\Attributes\Validation\Enum;
+use Spatie\LaravelData\Attributes\Validation\In;
 use Spatie\LaravelData\Attributes\Validation\StringValidationAttribute;
 use Spatie\LaravelData\Attributes\Validation\ValidationAttribute;
 
@@ -31,12 +33,35 @@ class AttributeWrapper
     public function getValue(): mixed
     {
         return match (true) {
-            $this->instance instanceof StringValidationAttribute => $this->instance->parameters()[0],
+            $this->instance instanceof StringValidationAttribute => $this->getStringValidationAttributeValue(),
+            $this->instance instanceof Enum => $this->getInstancePropertyValue('enum'),
+            $this->instance instanceof In => $this->getInstancePropertyValue('values'),
             $this->instance instanceof Title => $this->instance->getTitle(),
             $this->instance instanceof Description => $this->instance->getDescription(),
             $this->instance instanceof CustomAnnotation => $this->instance->getCustomAnnotation(),
             default => throw new \Exception('Attribute value not supported'),
         };
+    }
+
+    protected function getStringValidationAttributeValue(): mixed
+    {
+        $parameters = $this->instance->parameters();
+
+        if ($parameters === []) {
+            return null;
+        }
+
+        return count($parameters) === 1 ? $parameters[0] : $parameters;
+    }
+
+    /**
+     * Get the value of a property of the attribute instance.
+     */
+    protected function getInstancePropertyValue(string $property): mixed
+    {
+        $reflection = new \ReflectionObject($this->instance);
+
+        return $reflection->getProperty($property)->getValue($this->instance);
     }
 
     /**
