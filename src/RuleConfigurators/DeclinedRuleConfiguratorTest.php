@@ -9,7 +9,6 @@ covers(DeclinedRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the const keyword to a boolean schema')
-    ->todo()
     ->expect(fn () => $this->class->addBooleanProperty('test', [Declined::class]))
     ->toHaveSchema('test', [
         'type' => 'boolean',
@@ -17,7 +16,6 @@ it('applies the const keyword to a boolean schema')
     ]);
 
 it('applies the const keyword to an integer schema')
-    ->todo()
     ->expect(fn () => $this->class->addIntegerProperty('test', [Declined::class]))
     ->toHaveSchema('test', [
         'type' => 'integer',
@@ -25,7 +23,6 @@ it('applies the const keyword to an integer schema')
     ]);
 
 it('applies the const keyword to a number schema')
-    ->todo()
     ->expect(fn () => $this->class->addIntegerProperty('test', [Declined::class]))
     ->toHaveSchema('test', [
         'type' => 'integer',

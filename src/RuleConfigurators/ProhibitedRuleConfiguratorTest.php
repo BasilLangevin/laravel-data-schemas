@@ -17,7 +17,6 @@ it('applies the maxItems keyword to an array schema')
     ]);
 
 it('applies the const keyword to an integer schema')
-    ->todo()
     ->expect(fn () => $this->class->addIntegerProperty('test', [Prohibited::class]))
     ->toHaveSchema('test', [
         'type' => 'integer',
@@ -25,7 +24,6 @@ it('applies the const keyword to an integer schema')
     ]);
 
 it('applies the const keyword to a number schema')
-    ->todo()
     ->expect(fn () => $this->class->addNumberProperty('test', [Prohibited::class]))
     ->toHaveSchema('test', [
         'type' => 'number',
