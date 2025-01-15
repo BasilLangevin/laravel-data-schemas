@@ -23,7 +23,6 @@ it('applies the maximum keyword to an integer schema')
     ]);
 
 it('applies the maxProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [Max::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'object',

@@ -36,7 +36,6 @@ it('applies the not keyword to a number schema')
     ]);
 
 it('applies the minProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [Filled::class]))
     ->toHaveSchema('test', [
         'type' => 'object',

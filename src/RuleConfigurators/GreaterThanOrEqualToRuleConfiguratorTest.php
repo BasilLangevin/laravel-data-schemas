@@ -61,7 +61,6 @@ it('applies the x-greater-than-or-equal-to annotation to a number schema when co
     ]);
 
 it('applies the minProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [GreaterThanOrEqualTo::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'object',

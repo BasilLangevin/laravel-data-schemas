@@ -33,7 +33,6 @@ it('applies the minimum and maximum keywords to a number schema')
     ]);
 
 it('applies the minProperties and maxProperties keywords to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [Size::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'object',

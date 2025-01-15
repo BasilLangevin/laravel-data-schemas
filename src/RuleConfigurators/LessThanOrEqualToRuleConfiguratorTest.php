@@ -61,7 +61,6 @@ it('applies the x-less-than-or-equal-to annotation to a number schema when compa
     ]);
 
 it('applies the maxProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [LessThanOrEqualTo::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'object',

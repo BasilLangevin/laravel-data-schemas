@@ -7,6 +7,7 @@ use BasilLangevin\LaravelDataSchemas\Schemas\ArraySchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
@@ -36,6 +37,7 @@ class TransformPropertyToSchema
             $type === 'int' => IntegerSchema::class,
             $type === 'bool' => BooleanSchema::class,
             $type === 'array' => ArraySchema::class,
+            $type === 'object' => ObjectSchema::class,
             enum_exists($type) => $this->getEnumSchemaClass($type),
         };
     }

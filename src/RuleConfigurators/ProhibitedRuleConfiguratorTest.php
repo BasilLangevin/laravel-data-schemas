@@ -30,7 +30,6 @@ it('applies the const keyword to a number schema')
     ]);
 
 it('applies the maxProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [Prohibited::class]))
     ->toHaveSchema('test', [
         'type' => 'object',

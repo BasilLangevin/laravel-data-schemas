@@ -23,7 +23,6 @@ it('applies the minimum keyword to an integer schema')
     ]);
 
 it('applies the minProperties keyword to an object schema')
-    ->todo()
     ->expect(fn () => $this->class->addObjectProperty('test', [Min::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'object',
