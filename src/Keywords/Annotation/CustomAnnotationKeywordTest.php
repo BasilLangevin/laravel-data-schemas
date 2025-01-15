@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\CustomAnnotationKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\CustomAnnotationKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 
 covers(CustomAnnotationKeyword::class);

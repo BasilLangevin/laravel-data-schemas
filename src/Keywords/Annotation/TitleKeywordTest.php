@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\TitleKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\TitleKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 
 covers(TitleKeyword::class);

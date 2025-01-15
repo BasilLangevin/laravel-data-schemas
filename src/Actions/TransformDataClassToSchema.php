@@ -22,7 +22,7 @@ class TransformDataClassToSchema
         return ObjectSchema::make($class->getName())
             ->when(count($properties), fn (Schema $schema) => $schema->properties($properties))
             ->when(count($required), fn (Schema $schema) => $schema->required($required))
-            ->pipe(fn (Schema $schema) => ApplyDecorationsToSchema::run($schema, $class))
+            ->pipe(fn (Schema $schema) => ApplyAnnotationsToSchema::run($schema, $class))
             ->pipe(fn (Schema $schema) => ApplyRuleConfigurationsToSchema::run($schema, $class));
     }
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Decorators;
+namespace BasilLangevin\LaravelDataSchemas\Annotators;
 
+use BasilLangevin\LaravelDataSchemas\Annotators\Contracts\AnnotatesSchema;
 use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
-use BasilLangevin\LaravelDataSchemas\Decorators\Contracts\DecoratesSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 
-class CustomAnnotationDecorator implements DecoratesSchema
+class CustomAnnotationAnnotator implements AnnotatesSchema
 {
-    public static function decorateSchema(Schema $schema, EntityWrapper $entity): Schema
+    public static function annotateSchema(Schema $schema, EntityWrapper $entity): Schema
     {
         $annotations = $entity->attributes(CustomAnnotation::class)
             ->flatMap(fn ($attribute) => $attribute->getCustomAnnotation());

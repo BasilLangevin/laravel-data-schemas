@@ -21,7 +21,7 @@ class TransformPropertyToSchema
         return $schemaClass::make($property->getName())
             ->pipe(fn (Schema $schema) => ApplyDefaultToSchema::run($schema, $property))
             ->when($property->isEnum(), fn (Schema $schema) => ApplyEnumToSchema::run($schema, $property))
-            ->pipe(fn (Schema $schema) => ApplyDecorationsToSchema::run($schema, $property))
+            ->pipe(fn (Schema $schema) => ApplyAnnotationsToSchema::run($schema, $property))
             ->pipe(fn (Schema $schema) => ApplyRuleConfigurationsToSchema::run($schema, $property));
     }
 

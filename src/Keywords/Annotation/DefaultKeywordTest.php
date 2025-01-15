@@ -1,7 +1,7 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\DefaultKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 
 covers(DefaultKeyword::class);

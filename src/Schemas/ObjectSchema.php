@@ -3,11 +3,11 @@
 namespace BasilLangevin\LaravelDataSchemas\Schemas;
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\CustomAnnotationKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\DescriptionKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\TitleKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\CustomAnnotationKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DefaultKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\TitleKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Generic\ConstKeyword;
-use BasilLangevin\LaravelDataSchemas\Keywords\Decoration\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Generic\FormatKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\PropertiesKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\RequiredKeyword;

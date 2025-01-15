@@ -1,11 +1,11 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords\Decoration;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\Annotation;
 
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 
-class DescriptionKeyword extends Keyword
+class TitleKeyword extends Keyword
 {
     public function __construct(protected string $value) {}
 
@@ -23,7 +23,7 @@ class DescriptionKeyword extends Keyword
     public function apply(Collection $schema): Collection
     {
         return $schema->merge([
-            'description' => $this->get(),
+            'title' => $this->get(),
         ]);
     }
 }

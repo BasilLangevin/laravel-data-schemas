@@ -1,17 +1,17 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Decorators;
+namespace BasilLangevin\LaravelDataSchemas\Annotators;
 
+use BasilLangevin\LaravelDataSchemas\Annotators\Contracts\AnnotatesSchema;
 use BasilLangevin\LaravelDataSchemas\Attributes\Description;
-use BasilLangevin\LaravelDataSchemas\Decorators\Contracts\DecoratesSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Support\ClassWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
 
-class DescriptionDecorator implements DecoratesSchema
+class DescriptionAnnotator implements AnnotatesSchema
 {
-    public static function decorateSchema(Schema $schema, EntityWrapper $entity): Schema
+    public static function annotateSchema(Schema $schema, EntityWrapper $entity): Schema
     {
         if ($attribute = $entity->getAttribute(Description::class)) {
             return $schema->description($attribute->getValue());
