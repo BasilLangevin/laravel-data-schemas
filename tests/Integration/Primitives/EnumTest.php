@@ -38,7 +38,7 @@ it('can create a basic string enum schema from a data object', function () use (
     $schema = JsonSchema::make(BasicStringEnumData::class);
 
     expect($schema)->toBeInstanceOf(ObjectSchema::class);
-    expect($schema->name())->toBe('BasicStringEnumData');
+    expect($schema->getName())->toBe('BasicStringEnumData');
 
     expect($schema->toArray())->toBe($basicStringEnumSchema);
 });
@@ -55,7 +55,7 @@ it('can create a string enum schema with a description from a data object', func
     $schema = JsonSchema::make(StringEnumWithDescriptionData::class);
 
     expect($schema)->toBeInstanceOf(ObjectSchema::class);
-    expect($schema->name())->toBe('StringEnumWithDescriptionData');
+    expect($schema->getName())->toBe('StringEnumWithDescriptionData');
 
     Arr::set($basicStringEnumSchema, 'properties.testParameter.description', 'The test parameter.');
 
@@ -99,7 +99,7 @@ it('can create a basic integer enum schema from a data object', function () use 
     $schema = JsonSchema::make(BasicIntegerEnumData::class);
 
     expect($schema)->toBeInstanceOf(ObjectSchema::class);
-    expect($schema->name())->toBe('BasicIntegerEnumData');
+    expect($schema->getName())->toBe('BasicIntegerEnumData');
 
     expect($schema->toArray())->toBe($basicIntegerEnumSchema);
 });
@@ -116,7 +116,7 @@ it('can create an integer enum schema with a description from a data object', fu
     $schema = JsonSchema::make(IntegerEnumWithDescriptionData::class);
 
     expect($schema)->toBeInstanceOf(ObjectSchema::class);
-    expect($schema->name())->toBe('IntegerEnumWithDescriptionData');
+    expect($schema->getName())->toBe('IntegerEnumWithDescriptionData');
 
     Arr::set($basicIntegerEnumSchema, 'properties.testParameter.description', 'The test parameter.');
 

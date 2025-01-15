@@ -48,7 +48,7 @@ class PropertiesKeyword extends Keyword implements HandlesMultipleInstances
     protected static function resolveProperties(Collection $properties): array
     {
         return $properties->mapWithKeys(function ($property) {
-            return [$property->name() => $property->toArray()];
+            return [$property->getName() => $property->toArray()];
         })->all();
     }
 }

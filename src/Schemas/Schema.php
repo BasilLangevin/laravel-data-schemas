@@ -6,7 +6,7 @@ use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Schemas\Concerns\HasKeywords;
 use Illuminate\Support\Collection;
 
-abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
+abstract class Schema
 {
     use HasKeywords;
 
@@ -34,21 +34,21 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
     }
 
     /**
-     * Get the name of the schema.
-     */
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    /**
      * Set the name of the schema.
      */
-    public function setName(string $name): self
+    public function name(string $name): self
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Get the name of the schema.
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**

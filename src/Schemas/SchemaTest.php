@@ -20,21 +20,21 @@ class SchemaTestSchema extends Schema
 it('can be created with the make method')
     ->expect(SchemaTestSchema::make('test', 'test description'))
     ->toBeInstanceOf(SchemaTestSchema::class)
-    ->name()->toBe('test')
+    ->getName()->toBe('test')
     ->getDescription()->toBe('test description');
 
 it('has a name')
     ->expect(new SchemaTestSchema('test'))
-    ->name()->toBe('test');
+    ->getName()->toBe('test');
 
 it('can leave the name empty')
     ->expect(SchemaTestSchema::make())
-    ->name()->toBe('');
+    ->getName()->toBe('');
 
 it('can set its name after construction')
     ->expect(SchemaTestSchema::make())
-    ->setName('test')
-    ->name()->toBe('test');
+    ->name('test')
+    ->getName()->toBe('test');
 
 /**
  * For some reason, test coverage doesn't detect the description
