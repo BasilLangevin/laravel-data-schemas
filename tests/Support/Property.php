@@ -53,12 +53,16 @@ class Property
             return $argument->getValue();
         }
 
-        if (class_exists($argument)) {
+        if (is_string($argument) && class_exists($argument)) {
             return $argument.'::class';
         }
 
         if (is_string($argument)) {
             return "'".addslashes($argument)."'";
+        }
+
+        if (is_array($argument)) {
+            return json_encode($argument);
         }
 
         return $argument;

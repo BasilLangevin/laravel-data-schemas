@@ -7,7 +7,7 @@ use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
 use BasilLangevin\LaravelDataSchemas\Support\AttributeWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 
-class ArrayTypeConfigurator implements ConfiguresObjectSchema
+class ArrayTypeRuleConfigurator implements ConfiguresObjectSchema
 {
     public static function configureObjectSchema(
         ObjectSchema $schema,
