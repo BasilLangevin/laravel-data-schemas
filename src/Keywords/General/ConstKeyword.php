@@ -1,6 +1,6 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords\Generic;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\General;
 
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;

@@ -2,7 +2,7 @@
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
-use BasilLangevin\LaravelDataSchemas\Keywords\Generic\EnumKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\EnumKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Keywords\Generic;
+namespace BasilLangevin\LaravelDataSchemas\Keywords\General;
 
 use BasilLangevin\LaravelDataSchemas\Enums\Format;
 use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;

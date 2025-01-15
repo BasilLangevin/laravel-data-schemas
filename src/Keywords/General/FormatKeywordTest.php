@@ -3,7 +3,7 @@
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Enums\Format;
 use BasilLangevin\LaravelDataSchemas\Exceptions\SchemaConfigurationException;
-use BasilLangevin\LaravelDataSchemas\Keywords\Generic\FormatKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\FormatKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 
 covers(FormatKeyword::class);
