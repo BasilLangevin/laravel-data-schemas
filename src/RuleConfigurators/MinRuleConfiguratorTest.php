@@ -9,7 +9,6 @@ covers(MinRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the minItems keyword to an array schema')
-    ->todo()
     ->expect(fn () => $this->class->addArrayProperty('test', [Min::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'array',

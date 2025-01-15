@@ -9,7 +9,6 @@ covers(ProhibitedRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the maxItems keyword to an array schema')
-    ->todo()
     ->expect(fn () => $this->class->addArrayProperty('test', [Prohibited::class]))
     ->toHaveSchema('test', [
         'type' => 'array',

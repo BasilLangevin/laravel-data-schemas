@@ -9,7 +9,6 @@ covers(BetweenRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the minItems and maxItems keywords to an array schema')
-    ->todo()
     ->expect(fn () => $this->class->addArrayProperty('test', [Between::class => [10, 20]]))
     ->toHaveSchema('test', [
         'type' => 'array',

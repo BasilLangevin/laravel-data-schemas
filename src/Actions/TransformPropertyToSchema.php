@@ -3,6 +3,7 @@
 namespace BasilLangevin\LaravelDataSchemas\Actions;
 
 use BasilLangevin\LaravelDataSchemas\Actions\Concerns\Runnable;
+use BasilLangevin\LaravelDataSchemas\Schemas\ArraySchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\IntegerSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
@@ -34,6 +35,7 @@ class TransformPropertyToSchema
             $type === 'float' => NumberSchema::class,
             $type === 'int' => IntegerSchema::class,
             $type === 'bool' => BooleanSchema::class,
+            $type === 'array' => ArraySchema::class,
             enum_exists($type) => $this->getEnumSchemaClass($type),
         };
     }

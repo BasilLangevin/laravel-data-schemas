@@ -9,7 +9,6 @@ covers(MaxRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the maxItems keyword to an array schema')
-    ->todo()
     ->expect(fn () => $this->class->addArrayProperty('test', [Max::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'array',

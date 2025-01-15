@@ -9,7 +9,6 @@ covers(LessThanRuleConfigurator::class);
 uses(TestsSchemaTransformation::class);
 
 it('applies the maxItems keyword to an array schema')
-    ->todo()
     ->expect(fn () => $this->class->addArrayProperty('test', [LessThan::class => 10]))
     ->toHaveSchema('test', [
         'type' => 'array',
