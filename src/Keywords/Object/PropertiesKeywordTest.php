@@ -1,16 +1,18 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\PropertiesKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\BooleanSchema;
 use BasilLangevin\LaravelDataSchemas\Schemas\NumberSchema;
-use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
 
 covers(PropertiesKeyword::class);
 
-class PropertiesKeywordTestSchema extends Schema
+class PropertiesKeywordTestSchema extends ObjectSchema
 {
     public static array $keywords = [
+        TypeKeyword::class,
         PropertiesKeyword::class,
     ];
 }

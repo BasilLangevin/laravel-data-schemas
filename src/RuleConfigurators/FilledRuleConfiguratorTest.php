@@ -16,7 +16,6 @@ it('applies the minItems keyword to an array schema')
     ]);
 
 it('applies the not keyword to an integer schema')
-    ->todo()
     ->expect(fn () => $this->class->addIntegerProperty('test', [Filled::class]))
     ->toHaveSchema('test', [
         'type' => 'integer',
@@ -26,7 +25,6 @@ it('applies the not keyword to an integer schema')
     ]);
 
 it('applies the not keyword to a number schema')
-    ->todo()
     ->expect(fn () => $this->class->addNumberProperty('test', [Filled::class]))
     ->toHaveSchema('test', [
         'type' => 'number',

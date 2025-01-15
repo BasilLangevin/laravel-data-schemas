@@ -2,13 +2,15 @@
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
-use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 
 covers(DescriptionKeyword::class);
 
-class DescriptionKeywordTestSchema extends Schema
+class DescriptionKeywordTestSchema extends StringSchema
 {
     public static array $keywords = [
+        TypeKeyword::class,
         DescriptionKeyword::class,
     ];
 }

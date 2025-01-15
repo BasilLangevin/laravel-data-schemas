@@ -1,14 +1,16 @@
 <?php
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Object\RequiredKeyword;
-use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\ObjectSchema;
 
 covers(RequiredKeyword::class);
 
-class RequiredKeywordTestSchema extends Schema
+class RequiredKeywordTestSchema extends ObjectSchema
 {
     public static array $keywords = [
+        TypeKeyword::class,
         RequiredKeyword::class,
     ];
 }

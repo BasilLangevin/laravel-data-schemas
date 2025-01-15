@@ -5,6 +5,7 @@ namespace BasilLangevin\LaravelDataSchemas\Schemas\Concerns;
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\ReceivesParentSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -113,7 +114,13 @@ trait HasKeywords
             $this->keywordInstances[$name] = [];
         }
 
-        $this->keywordInstances[$name][] = new $keyword(...$arguments);
+        $instance = new $keyword(...$arguments);
+
+        if ($instance instanceof ReceivesParentSchema) {
+            $instance->parentSchema($this);
+        }
+
+        $this->keywordInstances[$name][] = $instance;
 
         return $this;
     }

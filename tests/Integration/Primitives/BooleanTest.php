@@ -49,5 +49,5 @@ it('can create a boolean schema with a description from a data object', function
 
     Arr::set($basicSchema, 'properties.testParameter.description', 'The test parameter.');
 
-    expect($schema->toArray())->toBe($basicSchema);
+    expect($schema->toArray())->toEqual($basicSchema);
 });

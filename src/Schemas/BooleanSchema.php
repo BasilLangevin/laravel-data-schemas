@@ -12,5 +12,6 @@ class BooleanSchema extends Schema
     public static array $keywords = [
         Keyword::ANNOTATION_KEYWORDS,
         Keyword::GENERAL_KEYWORDS,
+        Keyword::COMPOSITION_KEYWORDS,
     ];
 }

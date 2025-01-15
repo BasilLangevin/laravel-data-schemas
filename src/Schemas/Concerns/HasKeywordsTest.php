@@ -5,9 +5,10 @@ use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Concerns\HasKeywords;
-use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Schemas\StringSchema;
 use Illuminate\Support\Collection;
 
 covers(HasKeywords::class);
@@ -43,9 +44,10 @@ class TheHandlesMultipleInstancesTestKeyword extends TheTestKeyword implements H
     }
 }
 
-class HasKeywordsTestSchema extends Schema
+class HasKeywordsTestSchema extends StringSchema
 {
     public static array $keywords = [
+        TypeKeyword::class,
         DescriptionKeyword::class,
         TheTestKeyword::class,
         TheHandlesMultipleInstancesTestKeyword::class,

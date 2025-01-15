@@ -8,6 +8,7 @@ use BasilLangevin\LaravelDataSchemas\Attributes\Title;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Enum;
 use Spatie\LaravelData\Attributes\Validation\In;
+use Spatie\LaravelData\Attributes\Validation\NotIn;
 use Spatie\LaravelData\Attributes\Validation\StringValidationAttribute;
 use Spatie\LaravelData\Attributes\Validation\ValidationAttribute;
 
@@ -37,8 +38,8 @@ class AttributeWrapper
             $this->instance instanceof StringValidationAttribute => $this->getStringValidationAttributeValue(),
             $this->instance instanceof Enum => $this->getInstancePropertyValue('enum'),
             $this->instance instanceof In => Arr::flatten($this->getInstancePropertyValue('values')),
+            $this->instance instanceof NotIn => Arr::flatten($this->getInstancePropertyValue('values')),
             $this->instance instanceof Title => $this->instance->getTitle(),
-
             $this->instance instanceof Description => $this->instance->getDescription(),
             $this->instance instanceof CustomAnnotation => $this->instance->getCustomAnnotation(),
             default => throw new \Exception('Attribute value not supported'),

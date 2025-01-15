@@ -29,7 +29,7 @@ class FilledRuleConfigurator implements ConfiguresArraySchema, ConfiguresNumberS
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): NumberSchema {
-        return $schema->not->const(0);
+        return $schema->not(fn (NumberSchema $schema) => $schema->const(0));
     }
 
     public static function configureObjectSchema(

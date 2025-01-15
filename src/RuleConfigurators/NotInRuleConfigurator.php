@@ -16,7 +16,7 @@ class NotInRuleConfigurator implements ConfiguresNumberSchema, ConfiguresStringS
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): NumberSchema {
-        return $schema->not->enum($attribute->getValue());
+        return $schema->not(fn (NumberSchema $schema) => $schema->enum($attribute->getValue()));
     }
 
     public static function configureStringSchema(
@@ -24,6 +24,6 @@ class NotInRuleConfigurator implements ConfiguresNumberSchema, ConfiguresStringS
         PropertyWrapper $property,
         AttributeWrapper $attribute
     ): StringSchema {
-        return $schema->not->enum($attribute->getValue());
+        return $schema->not(fn (StringSchema $schema) => $schema->enum($attribute->getValue()));
     }
 }

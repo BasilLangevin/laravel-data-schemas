@@ -6,9 +6,11 @@ use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\CustomAnnotationKeyword
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DefaultKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\TitleKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Composition\NotKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\General\ConstKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\General\EnumKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\General\FormatKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use Illuminate\Support\Collection;
 
 abstract class Keyword
@@ -21,9 +23,14 @@ abstract class Keyword
     ];
 
     const GENERAL_KEYWORDS = [
+        TypeKeyword::class,
         EnumKeyword::class,
         ConstKeyword::class,
         FormatKeyword::class,
+    ];
+
+    const COMPOSITION_KEYWORDS = [
+        NotKeyword::class,
     ];
 
     /**

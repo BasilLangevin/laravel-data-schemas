@@ -29,7 +29,8 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
      */
     public static function make(string $name = '', string $description = ''): self
     {
-        return new static($name, $description);
+        return (new static($name, $description))
+            ->type(static::$type);
     }
 
     /**
@@ -48,6 +49,14 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Clone the base structure of the schema.
+     */
+    public function cloneBaseStructure(): self
+    {
+        return new static;
     }
 
     /**
@@ -75,16 +84,12 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
      */
     public function toArray(): array
     {
-        $schema = collect([
-            'type' => static::$type->value,
-        ]);
-
         return collect(static::$keywords)
             ->flatten()
             ->filter(fn (string $keyword) => $this->hasKeyword($keyword))
             ->reduce(function (Collection $schema, string $keyword) {
                 return $this->applyKeyword($keyword, $schema);
-            }, $schema)
+            }, collect())
             ->toArray();
     }
 }

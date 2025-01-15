@@ -20,10 +20,11 @@ class TransformDataClassToSchema
         $required = $this->getRequired($class);
 
         return ObjectSchema::make($class->getName())
-            ->when(count($properties), fn (Schema $schema) => $schema->properties($properties))
-            ->when(count($required), fn (Schema $schema) => $schema->required($required))
+            ->type('object')
             ->pipe(fn (Schema $schema) => ApplyAnnotationsToSchema::run($schema, $class))
-            ->pipe(fn (Schema $schema) => ApplyRuleConfigurationsToSchema::run($schema, $class));
+            ->pipe(fn (Schema $schema) => ApplyRuleConfigurationsToSchema::run($schema, $class))
+            ->when(count($properties), fn (Schema $schema) => $schema->properties($properties))
+            ->when(count($required), fn (Schema $schema) => $schema->required($required));
     }
 
     /**

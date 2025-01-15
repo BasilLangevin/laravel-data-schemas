@@ -2,6 +2,7 @@
 
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 
 covers(Schema::class);
@@ -11,6 +12,7 @@ class SchemaTestSchema extends Schema
     public static DataType $type = DataType::Boolean;
 
     public static array $keywords = [
+        TypeKeyword::class,
         DescriptionKeyword::class,
     ];
 }
