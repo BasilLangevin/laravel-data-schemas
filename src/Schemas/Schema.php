@@ -80,6 +80,7 @@ abstract class Schema implements \EchoLabs\Prism\Contracts\Schema
         ]);
 
         return collect(static::$keywords)
+            ->flatten()
             ->filter(fn (string $keyword) => $this->hasKeyword($keyword))
             ->reduce(function (Collection $schema, string $keyword) {
                 return $this->applyKeyword($keyword, $schema);

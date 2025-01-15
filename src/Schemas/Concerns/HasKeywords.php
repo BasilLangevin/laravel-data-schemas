@@ -14,6 +14,8 @@ trait HasKeywords
 {
     /**
      * The keywords that are available for this schema type.
+     *
+     * @see https://json-schema.org/draft/2020-12/json-schema-validation
      */
     public static array $keywords;
 
@@ -21,6 +23,14 @@ trait HasKeywords
      * The instances of each keyword that has been set.
      */
     private array $keywordInstances = [];
+
+    /**
+     * Get the keywords that are available for this schema type.
+     */
+    protected function getKeywords(): array
+    {
+        return Arr::flatten(static::$keywords);
+    }
 
     /**
      * Get the instance of the given keyword.
@@ -45,7 +55,7 @@ trait HasKeywords
      */
     private function getKeywordByMethod(string $name): ?string
     {
-        return Arr::first(static::$keywords, function ($keyword) use ($name) {
+        return Arr::first($this->getKeywords(), function ($keyword) use ($name) {
             return $keyword::method() === $name;
         });
     }

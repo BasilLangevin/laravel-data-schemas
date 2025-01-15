@@ -2,10 +2,30 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords;
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\CustomAnnotationKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DefaultKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\TitleKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\ConstKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\EnumKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\General\FormatKeyword;
 use Illuminate\Support\Collection;
 
 abstract class Keyword
 {
+    const ANNOTATION_KEYWORDS = [
+        TitleKeyword::class,
+        DescriptionKeyword::class,
+        DefaultKeyword::class,
+        CustomAnnotationKeyword::class,
+    ];
+
+    const GENERAL_KEYWORDS = [
+        EnumKeyword::class,
+        ConstKeyword::class,
+        FormatKeyword::class,
+    ];
+
     /**
      * A custom name for the method that sets the keyword value.
      * The method name is automatically generated if not set.
