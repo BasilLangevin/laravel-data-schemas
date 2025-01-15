@@ -16,7 +16,6 @@ it('applies the maxItems keyword to an array schema')
     ]);
 
 it('applies the x-less-than-or-equal-to annotation to an array schema when comparing to another field')
-    ->todo()
     ->expect(fn () => $this->class
         ->addArrayProperty('test', [LessThanOrEqualTo::class => 'other'])
         ->addArrayProperty('other')
@@ -68,7 +67,6 @@ it('applies the maxProperties keyword to an object schema')
     ]);
 
 it('applies the x-less-than-or-equal-to annotation to an object schema when comparing to another field')
-    ->todo()
     ->expect(fn () => $this->class
         ->addObjectProperty('test', [LessThanOrEqualTo::class => 'other'])
         ->addObjectProperty('other')
