@@ -1,29 +1,42 @@
 <?php
 
-namespace BasilLangevin\LaravelDataSchemas\Actions;
+namespace BasilLangevin\LaravelDataSchemas\Annotators;
 
-use BasilLangevin\LaravelDataSchemas\Actions\Concerns\Runnable;
+use BasilLangevin\LaravelDataSchemas\Annotators\Contracts\AnnotatesSchema;
+use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
+use BasilLangevin\LaravelDataSchemas\Support\Contracts\EntityWrapper;
 use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
 use ReflectionParameter;
 
-class ApplyDefaultToSchema
+class DefaultAnnotationAnnotator implements AnnotatesSchema
 {
-    use Runnable;
+    public static function annotateSchema(Schema $schema, EntityWrapper $entity): Schema
+    {
+        if (! $entity instanceof PropertyWrapper) {
+            return $schema;
+        }
 
-    public function handle(Schema $schema, PropertyWrapper $property): Schema
+        try {
+            return $schema->default(self::getDefaultValue($entity));
+        } catch (KeywordNotSetException $e) {
+            return $schema;
+        }
+    }
+
+    protected static function getDefaultValue(PropertyWrapper $property): mixed
     {
         if ($property->hasDefaultValue()) {
-            return $schema->default($property->getDefaultValue());
+            return $property->getDefaultValue();
         }
 
         $parameter = self::getConstructorParameter($property);
 
         if (! $parameter || ! $parameter->isOptional()) {
-            return $schema;
+            throw new KeywordNotSetException;
         }
 
-        return $schema->default($parameter->getDefaultValue() ?? null);
+        return $parameter->getDefaultValue() ?? null;
     }
 
     /**

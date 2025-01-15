@@ -4,6 +4,7 @@ namespace BasilLangevin\LaravelDataSchemas\Actions;
 
 use BasilLangevin\LaravelDataSchemas\Actions\Concerns\Runnable;
 use BasilLangevin\LaravelDataSchemas\Annotators\CustomAnnotationAnnotator;
+use BasilLangevin\LaravelDataSchemas\Annotators\DefaultAnnotationAnnotator;
 use BasilLangevin\LaravelDataSchemas\Annotators\DescriptionAnnotator;
 use BasilLangevin\LaravelDataSchemas\Annotators\TitleAnnotator;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
@@ -17,6 +18,7 @@ class ApplyAnnotationsToSchema
         TitleAnnotator::class,
         DescriptionAnnotator::class,
         CustomAnnotationAnnotator::class,
+        DefaultAnnotationAnnotator::class,
     ];
 
     public function handle(Schema $schema, EntityWrapper $entity): Schema
