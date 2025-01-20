@@ -2,10 +2,11 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\String;
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\MergesMultipleInstancesIntoAllOf;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Collection;
 
-class PatternKeyword extends Keyword
+class PatternKeyword extends Keyword implements MergesMultipleInstancesIntoAllOf
 {
     public function __construct(protected string $value) {}
 

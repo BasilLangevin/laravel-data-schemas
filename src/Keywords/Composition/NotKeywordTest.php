@@ -11,6 +11,7 @@ $basicOutput = collect([
 ]);
 
 $notCallback = fn (StringSchema $schema) => $schema->minLength(42);
+$notCallback2 = fn (StringSchema $schema) => $schema->minLength(43);
 
 it('can set a callback')
     ->expect(fn () => StringSchema::make()->not($notCallback))
@@ -57,5 +58,16 @@ it('can apply the callback to a schema')
         'type' => DataType::String->value,
         'not' => [
             'minLength' => 42,
+        ],
+    ]));
+
+it('combines multiple not keywords into an allOf')
+    ->expect(StringSchema::make()->not($notCallback)->not($notCallback2))
+    ->applyKeyword(NotKeyword::class, $basicOutput)
+    ->toEqual(collect([
+        'type' => DataType::String->value,
+        'allOf' => [
+            ['not' => ['minLength' => 42]],
+            ['not' => ['minLength' => 43]],
         ],
     ]));

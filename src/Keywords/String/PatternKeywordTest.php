@@ -27,7 +27,6 @@ it('can apply the pattern to a schema')
     ]));
 
 it('combines multiple patterns into an allOf')
-    ->todo()
     ->expect(StringSchema::make()->pattern('/^[a-z]+$/')->pattern('/^[0-9]+$/'))
     ->applyKeyword(PatternKeyword::class, $basicOutput)
     ->toEqual(collect([

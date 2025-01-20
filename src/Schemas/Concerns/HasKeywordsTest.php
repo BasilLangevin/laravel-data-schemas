@@ -5,6 +5,7 @@ use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Composition\NotKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\MergesMultipleInstancesIntoAllOf;
 use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Concerns\HasKeywords;
@@ -44,6 +45,23 @@ class TheHandlesMultipleInstancesTestKeyword extends TheTestKeyword implements H
     }
 }
 
+class TheMergesMultipleInstancesIntoAllOfTestKeyword extends Keyword implements MergesMultipleInstancesIntoAllOf
+{
+    public function __construct(protected mixed $value) {}
+
+    public function get(): mixed
+    {
+        return $this->value;
+    }
+
+    public function apply(Collection $schema): Collection
+    {
+        return $schema->merge([
+            'result' => $this->get(),
+        ]);
+    }
+}
+
 class HasKeywordsTestSchema extends StringSchema
 {
     public static array $keywords = [
@@ -51,6 +69,7 @@ class HasKeywordsTestSchema extends StringSchema
         DescriptionKeyword::class,
         TheTestKeyword::class,
         TheHandlesMultipleInstancesTestKeyword::class,
+        TheMergesMultipleInstancesIntoAllOfTestKeyword::class,
     ];
 }
 
@@ -229,4 +248,59 @@ it('can apply multiple instances of a keyword when the keyword implements Handle
         'type' => DataType::String->value,
         'result' => 'I was successfully applied multiple times',
     ]));
+});
+
+it('combines multiple instances of a keyword into an allOf when the keyword implements MergesMultipleInstancesIntoAllOf')
+    ->expect(HasKeywordsTestSchema::make()->theMergesMultipleInstancesIntoAllOfTest('This is a description')->theMergesMultipleInstancesIntoAllOfTest('This is a new description'))
+    ->applyKeyword(TheMergesMultipleInstancesIntoAllOfTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]))
+    ->toEqual(collect([
+        'type' => DataType::String->value,
+        'allOf' => [
+            ['result' => 'This is a description'],
+            ['result' => 'This is a new description'],
+        ],
+    ]));
+
+it('ignores duplicate instances of a keyword when merging into an allOf')
+    ->expect(HasKeywordsTestSchema::make()->theMergesMultipleInstancesIntoAllOfTest('This is a description')->theMergesMultipleInstancesIntoAllOfTest('This is a description')->theMergesMultipleInstancesIntoAllOfTest('This is a new description'))
+    ->applyKeyword(TheMergesMultipleInstancesIntoAllOfTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]))
+    ->toEqual(collect([
+        'type' => DataType::String->value,
+        'allOf' => [
+            ['result' => 'This is a description'],
+            ['result' => 'This is a new description'],
+        ],
+    ]));
+
+test('when all instances of an keyword that implements MergesMultipleInstancesIntoAllOf are the same it applies the keyword to the schema without wrapping it in an allOf')
+    ->expect(HasKeywordsTestSchema::make()->theMergesMultipleInstancesIntoAllOfTest('This is a description')->theMergesMultipleInstancesIntoAllOfTest('This is a description'))
+    ->applyKeyword(TheMergesMultipleInstancesIntoAllOfTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]))
+    ->toEqual(collect([
+        'type' => DataType::String->value,
+        'result' => 'This is a description',
+    ]));
+
+it('merges multiple MergesMultipleInstancesIntoAllOf keywords into a single allOf', function () {
+    $schema = StringSchema::make();
+
+    $schema->not(fn (StringSchema $schema) => $schema->minLength(42));
+    $schema->not(fn (StringSchema $schema) => $schema->minLength(43));
+
+    $schema->pattern('/^[a-z]+$/');
+    $schema->pattern('/^[0-9]+$/');
+
+    expect($schema->toArray())->toEqual([
+        'allOf' => [
+            ['not' => ['minLength' => 42]],
+            ['not' => ['minLength' => 43]],
+            ['pattern' => '/^[a-z]+$/'],
+            ['pattern' => '/^[0-9]+$/'],
+        ],
+    ]);
 });

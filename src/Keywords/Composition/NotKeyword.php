@@ -2,13 +2,14 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Keywords\Composition;
 
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\MergesMultipleInstancesIntoAllOf;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\ReceivesParentSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use Closure;
 use Illuminate\Support\Collection;
 
-class NotKeyword extends Keyword implements ReceivesParentSchema
+class NotKeyword extends Keyword implements MergesMultipleInstancesIntoAllOf, ReceivesParentSchema
 {
     protected Schema $parentSchema;
 

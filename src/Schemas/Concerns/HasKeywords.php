@@ -5,6 +5,7 @@ namespace BasilLangevin\LaravelDataSchemas\Schemas\Concerns;
 use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
+use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\MergesMultipleInstancesIntoAllOf;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\ReceivesParentSchema;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
 use Illuminate\Support\Arr;
@@ -154,11 +155,35 @@ trait HasKeywords
             return $instances->first()->apply($schema);
         }
 
-        if (! is_subclass_of($name, HandlesMultipleInstances::class)) {
-            return $instances->last()->apply($schema);
+        if (is_subclass_of($name, MergesMultipleInstancesIntoAllOf::class)) {
+            return $this->mergeAllOf($schema, $instances);
         }
 
-        return $name::applyMultiple($schema, $instances);
+        if (is_subclass_of($name, HandlesMultipleInstances::class)) {
+            return $name::applyMultiple($schema, $instances);
+        }
+
+        return $instances->last()->apply($schema);
+    }
+
+    /**
+     * Merge the given instances into an allOf keyword.
+     */
+    protected function mergeAllOf(Collection $schema, Collection $instances): Collection
+    {
+        $allOf = $schema->get('allOf', []);
+
+        $subschemas = $instances->map(function ($instance) {
+            return $this->cloneBaseStructure()->setKeyword(get_class($instance), $instance->get());
+        })->map->toArray()->unique();
+
+        if (count($subschemas) === 1) {
+            return $instances->first()->apply($schema);
+        }
+
+        $allOf = collect($allOf)->merge($subschemas)->all();
+
+        return $schema->put('allOf', $allOf);
     }
 
     /**
