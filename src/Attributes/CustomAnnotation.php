@@ -3,31 +3,20 @@
 namespace BasilLangevin\LaravelDataSchemas\Attributes;
 
 use Attribute;
-use Illuminate\Contracts\Support\Arrayable;
+use BasilLangevin\LaravelDataSchemas\Attributes\Contracts\ArrayAttribute;
 
 /**
  * Adds a custom annotation to a Data object or property.
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class CustomAnnotation implements Arrayable
+class CustomAnnotation implements ArrayAttribute
 {
     public function __construct(protected string|array $annotation, protected ?string $value = null) {}
 
-    /**
-     * Get the custom annotation.
-     */
-    public function getCustomAnnotation(): array
+    public function getValue(): array
     {
         return is_array($this->annotation)
             ? $this->annotation
             : [$this->annotation => $this->value];
-    }
-
-    /**
-     * Get the custom annotation as an array.
-     */
-    public function toArray(): array
-    {
-        return $this->getCustomAnnotation();
     }
 }

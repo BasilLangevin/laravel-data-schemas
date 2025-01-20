@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its minimum value')
-    ->expect(ObjectSchema::make()->minProperties(42))
+    ->expect(fn () => ObjectSchema::make()->minProperties(42))
     ->getMinProperties()->toBe(42);
 
 it('can get its minimum value')

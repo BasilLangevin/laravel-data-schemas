@@ -14,7 +14,7 @@ class TransformDataClassToSchema
 {
     use Runnable;
 
-    public function handle(ClassWrapper $class)
+    public function handle(ClassWrapper $class): ObjectSchema
     {
         $properties = $this->getProperties($class);
         $required = $this->getRequired($class);

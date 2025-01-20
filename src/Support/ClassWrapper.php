@@ -35,14 +35,6 @@ class ClassWrapper implements EntityWrapper
     }
 
     /**
-     * Get the short name of the class.
-     */
-    public function getShortName(): string
-    {
-        return $this->class->getShortName();
-    }
-
-    /**
      * Get the properties of the reflector as a collection.
      */
     public function properties(): Collection

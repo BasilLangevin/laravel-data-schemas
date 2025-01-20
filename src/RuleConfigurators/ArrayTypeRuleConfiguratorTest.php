@@ -1,10 +1,10 @@
 <?php
 
-use BasilLangevin\LaravelDataSchemas\RuleConfigurators\AlphaNumericRuleConfigurator;
+use BasilLangevin\LaravelDataSchemas\RuleConfigurators\ArrayTypeRuleConfigurator;
 use BasilLangevin\LaravelDataSchemas\Tests\TestsSchemaTransformation;
 use Spatie\LaravelData\Attributes\Validation\ArrayType;
 
-covers(AlphaNumericRuleConfigurator::class);
+covers(ArrayTypeRuleConfigurator::class);
 
 uses(TestsSchemaTransformation::class);
 

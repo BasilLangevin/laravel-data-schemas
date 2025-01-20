@@ -2,9 +2,8 @@
 
 namespace BasilLangevin\LaravelDataSchemas\Support;
 
-use BasilLangevin\LaravelDataSchemas\Attributes\CustomAnnotation;
-use BasilLangevin\LaravelDataSchemas\Attributes\Description;
-use BasilLangevin\LaravelDataSchemas\Attributes\Title;
+use BasilLangevin\LaravelDataSchemas\Attributes\Contracts\ArrayAttribute;
+use BasilLangevin\LaravelDataSchemas\Attributes\Contracts\StringAttribute;
 use Illuminate\Support\Arr;
 use Spatie\LaravelData\Attributes\Validation\Enum;
 use Spatie\LaravelData\Attributes\Validation\In;
@@ -35,13 +34,16 @@ class AttributeWrapper
     public function getValue(): mixed
     {
         return match (true) {
+            // Local attributes
+            $this->instance instanceof StringAttribute => $this->instance->getValue(),
+            $this->instance instanceof ArrayAttribute => $this->instance->getValue(),
+
+            // Spatie/laravel-data validation attributes
             $this->instance instanceof StringValidationAttribute => $this->getStringValidationAttributeValue(),
             $this->instance instanceof Enum => $this->getInstancePropertyValue('enum'),
             $this->instance instanceof In => Arr::flatten($this->getInstancePropertyValue('values')),
             $this->instance instanceof NotIn => Arr::flatten($this->getInstancePropertyValue('values')),
-            $this->instance instanceof Title => $this->instance->getTitle(),
-            $this->instance instanceof Description => $this->instance->getDescription(),
-            $this->instance instanceof CustomAnnotation => $this->instance->getCustomAnnotation(),
+
             default => throw new \Exception('Attribute value not supported'),
         };
     }

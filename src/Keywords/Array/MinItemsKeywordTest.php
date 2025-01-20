@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its minimum value')
-    ->expect(ArraySchema::make()->minItems(42))
+    ->expect(fn () => ArraySchema::make()->minItems(42))
     ->getMinItems()->toBe(42);
 
 it('can get its minimum value')

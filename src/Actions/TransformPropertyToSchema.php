@@ -16,7 +16,7 @@ class TransformPropertyToSchema
 {
     use Runnable;
 
-    public function handle(PropertyWrapper $property)
+    public function handle(PropertyWrapper $property): Schema
     {
         $schemaClass = $this->getSchemaClass($property);
 

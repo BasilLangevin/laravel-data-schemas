@@ -25,6 +25,10 @@ class TestClassWrapperClass
     }
 }
 
+it('can get its name')
+    ->expect(ClassWrapper::make(TestClassWrapperClass::class)->getName())
+    ->toBe('TestClassWrapperClass');
+
 it('can check if it has an attribute', function () {
     $reflector = ClassWrapper::make(TestClassWrapperClass::class);
 

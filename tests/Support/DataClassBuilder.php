@@ -3,7 +3,9 @@
 namespace BasilLangevin\LaravelDataSchemas\Tests\Support;
 
 use BasilLangevin\LaravelDataSchemas\Actions\TransformDataClassToSchema;
+use BasilLangevin\LaravelDataSchemas\Schemas\Schema;
 use BasilLangevin\LaravelDataSchemas\Support\ClassWrapper;
+use BasilLangevin\LaravelDataSchemas\Support\PropertyWrapper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -81,12 +83,41 @@ class DataClassBuilder
      */
     protected function getTestClassName(): string
     {
-        return str($this->getTestName())
-            ->replaceMatches("/[\(\)\\\',]/", '')
-            ->studly()
-            ->take(20)
-            ->append('_')
-            ->append(mt_rand(1000, 9999));
+        return once(function () {
+            return str($this->getTestName())
+                ->replaceMatches("/[\(\)\\\',]/", '')
+                ->studly()
+                ->take(20)
+                ->append('_')
+                ->append(mt_rand(1000, 9999));
+        });
+    }
+
+    protected function defineClass(): void
+    {
+        once(function () {
+            $className = $this->getTestClassName();
+            $extends = Data::class;
+            $propertyDefinitions = $this->getPropertyDefinitions();
+
+            eval(<<<EOT
+            class {$className} extends {$extends}
+            {
+                public function __construct(
+                    {$propertyDefinitions}
+                ) {}
+                }
+            EOT);
+        });
+    }
+
+    public function getSchemaClass(): Schema
+    {
+        $className = $this->getTestClassName();
+
+        $this->defineClass();
+
+        return TransformDataClassToSchema::run(ClassWrapper::make($className));
     }
 
     /**
@@ -94,28 +125,20 @@ class DataClassBuilder
      */
     public function getSchema(?string $propertyScope = null): array
     {
-        $className = $this->getTestClassName();
-        $extends = Data::class;
-        $propertyDefinitions = $this->getPropertyDefinitions();
-
-        eval(<<<EOT
-        class {$className} extends {$extends}
-        {
-            public function __construct(
-                {$propertyDefinitions}
-            ) {}
-        }
-        EOT);
-
-        $schema = TransformDataClassToSchema::run(ClassWrapper::make($className));
-
-        $result = $schema->toArray();
+        $schema = $this->getSchemaClass();
 
         if (filled($propertyScope)) {
-            $result = Arr::get($result, 'properties.'.$propertyScope);
+            return Arr::get($schema->toArray(), 'properties.'.$propertyScope);
         }
 
-        return $result;
+        return $schema->toArray();
+    }
+
+    public function getClassProperty(string $name): PropertyWrapper
+    {
+        $this->defineClass();
+
+        return PropertyWrapper::make($this->getTestClassName(), $name);
     }
 
     public function getProperties(): Collection

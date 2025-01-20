@@ -29,8 +29,7 @@ abstract class Schema
      */
     public static function make(string $name = '', string $description = ''): self
     {
-        return (new static($name, $description))
-            ->type(static::$type);
+        return new static($name, $description);
     }
 
     /**

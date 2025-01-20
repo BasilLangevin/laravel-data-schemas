@@ -99,7 +99,9 @@ class EnumKeyword extends Keyword implements HandlesMultipleInstances
     {
         $values = $instances->map(fn ($instance) => $instance->getValues());
 
-        $commonValues = $values->skip(1)
+        $commonValues = $values
+            // The skip(1) is not technically needed, but it improves performance.
+            ->skip(1) // @pest-mutate-ignore
             ->reduce(function (Collection $result, array $instanceValues) {
                 return $result->intersect($instanceValues);
             }, collect($values->first()))

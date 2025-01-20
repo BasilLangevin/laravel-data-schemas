@@ -24,13 +24,9 @@ class NotKeyword extends Keyword implements ReceivesParentSchema
     /**
      * Get the value of the keyword.
      */
-    public function get(): Schema
+    public function get(): Closure
     {
-        $schema = $this->parentSchema->cloneBaseStructure();
-
-        ($this->callback)($schema);
-
-        return $schema;
+        return $this->callback;
     }
 
     /**
@@ -38,6 +34,10 @@ class NotKeyword extends Keyword implements ReceivesParentSchema
      */
     public function apply(Collection $schema): Collection
     {
-        return $schema->merge(['not' => $this->get()->toArray()]);
+        $notSchema = $this->parentSchema->cloneBaseStructure();
+
+        ($this->callback)($notSchema);
+
+        return $schema->merge(['not' => $notSchema->toArray()]);
     }
 }

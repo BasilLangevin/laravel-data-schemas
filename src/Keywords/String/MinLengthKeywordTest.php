@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its minimum value')
-    ->expect(StringSchema::make()->minLength(42))
+    ->expect(fn () => StringSchema::make()->minLength(42))
     ->getMinLength()->toBe(42);
 
 it('can get its minimum value')

@@ -18,11 +18,13 @@ class TestPropertyWrapperClass
 
     public bool $testBoolean;
 
+    public TestStringEnum $testEnum;
+
     public float $testFloat;
 
     public int $testInt;
 
-    public TestStringEnum $testEnum;
+    public object $testObject;
 
     protected string $hidden;
 
@@ -31,6 +33,33 @@ class TestPropertyWrapperClass
         return 'test';
     }
 }
+
+it('can check if the reflected property has a given type', function (string $property, string $type) {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, $property);
+
+    expect($reflector->hasType($type))->toBe(true);
+})->with([
+    ['test', '*'],
+    ['test', 'string'],
+    ['testArray', 'array'],
+    ['testBoolean', 'boolean'],
+    ['testFloat', 'number'],
+    ['testInt', 'integer'],
+    ['testObject', 'object'],
+]);
+
+test('hasType returns false if the reflected property does not have a given type', function (string $property, string $type) {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, $property);
+
+    expect($reflector->hasType($type))->toBe(false);
+})->with([
+    ['test', 'integer'],
+    ['testArray', 'string'],
+    ['testBoolean', 'number'],
+    ['testFloat', 'boolean'],
+    ['testInt', 'string'],
+    ['testEnum', 'nonexistent'],
+]);
 
 it('can check if the reflected property is an array', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'testArray');
@@ -92,6 +121,36 @@ test('isInteger returns false if the reflected property is not an integer', func
     expect($reflector->isInteger())->toBe(false);
 });
 
+it('can check if a reflected float property is a number', function () {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'testFloat');
+
+    expect($reflector->isNumber())->toBe(true);
+});
+
+it('can check if a reflected int property is a number', function () {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'testInt');
+
+    expect($reflector->isNumber())->toBe(true);
+});
+
+test('isNumber returns false if the reflected property is not a number', function () {
+    $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
+
+    expect($reflector->isNumber())->toBe(false);
+});
+
+it('can check if the reflected property is an object', function () {
+    $property = PropertyWrapper::make(TestPropertyWrapperClass::class, 'testObject');
+
+    expect($property->isObject())->toBe(true);
+});
+
+test('isObject returns false if the reflected property is not an object', function () {
+    $property = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
+
+    expect($property->isObject())->toBe(false);
+});
+
 it('can check if the reflected property is a string', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
@@ -142,16 +201,16 @@ it('can get its siblings', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
     expect($reflector->siblings())->toBeCollection()
-        ->toHaveCount(5)
+        ->toHaveCount(6)
         ->each->toBeInstanceOf(PropertyWrapper::class);
 
     expect($reflector->siblings()->map->getName()->toArray())
-        ->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt', 'testEnum']);
+        ->toBe(['testArray', 'testBoolean', 'testEnum', 'testFloat', 'testInt', 'testObject']);
 });
 
 it('can get its sibling names', function () {
     $reflector = PropertyWrapper::make(TestPropertyWrapperClass::class, 'test');
 
     expect($reflector->siblingNames())->toBeCollection();
-    expect($reflector->siblingNames()->toArray())->toBe(['testArray', 'testBoolean', 'testFloat', 'testInt', 'testEnum']);
+    expect($reflector->siblingNames()->toArray())->toBe(['testArray', 'testBoolean', 'testEnum', 'testFloat', 'testInt', 'testObject']);
 });

@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set a custom annotation')
-    ->expect(StringSchema::make()->customAnnotation('test', 'value'))
+    ->expect(fn () => StringSchema::make()->customAnnotation('test', 'value'))
     ->getCustomAnnotation()->toBe(['x-test' => 'value']);
 
 it('can set a custom annotation with an array')

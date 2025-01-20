@@ -3,27 +3,17 @@
 namespace BasilLangevin\LaravelDataSchemas\Attributes;
 
 use Attribute;
+use BasilLangevin\LaravelDataSchemas\Attributes\Contracts\StringAttribute;
 
 /**
  * Adds a title to a Data object or property.
  */
 #[Attribute]
-class Title
+class Title implements StringAttribute
 {
     public function __construct(protected string $title) {}
 
-    /**
-     * Get the title.
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * Get the title as a string.
-     */
-    public function __toString(): string
+    public function getValue(): string
     {
         return $this->title;
     }

@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its maximum value')
-    ->expect(ArraySchema::make()->maxItems(42))
+    ->expect(fn () => ArraySchema::make()->maxItems(42))
     ->getMaxItems()->toBe(42);
 
 it('can get its maximum value')

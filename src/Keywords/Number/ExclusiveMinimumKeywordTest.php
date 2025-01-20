@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its exclusive minimum value')
-    ->expect(NumberSchema::make()->exclusiveMinimum(42))
+    ->expect(fn () => NumberSchema::make()->exclusiveMinimum(42))
     ->getExclusiveMinimum()->toBe(42);
 
 it('can get its exclusive minimum value')

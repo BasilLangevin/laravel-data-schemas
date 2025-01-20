@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its const value')
-    ->expect(BooleanSchema::make()->const(true))
+    ->expect(fn () => BooleanSchema::make()->const(true))
     ->getConst()->toBe(true);
 
 it('can apply the const value to a schema')

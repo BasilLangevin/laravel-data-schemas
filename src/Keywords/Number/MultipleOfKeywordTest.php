@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its multiple of value')
-    ->expect(NumberSchema::make()->multipleOf(42))
+    ->expect(fn () => NumberSchema::make()->multipleOf(42))
     ->getMultipleOf()->toBe(42);
 
 it('can get its exclusive minimum value')

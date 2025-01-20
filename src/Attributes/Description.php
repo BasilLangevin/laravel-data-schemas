@@ -3,27 +3,17 @@
 namespace BasilLangevin\LaravelDataSchemas\Attributes;
 
 use Attribute;
+use BasilLangevin\LaravelDataSchemas\Attributes\Contracts\StringAttribute;
 
 /**
  * Adds a description to a Data object or property.
  */
 #[Attribute]
-class Description
+class Description implements StringAttribute
 {
     public function __construct(protected string $description) {}
 
-    /**
-     * Get the description.
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the description as a string.
-     */
-    public function __toString(): string
+    public function getValue(): string
     {
         return $this->description;
     }

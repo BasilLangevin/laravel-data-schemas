@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its minimum value')
-    ->expect(NumberSchema::make()->minimum(42))
+    ->expect(fn () => NumberSchema::make()->minimum(42))
     ->getMinimum()->toBe(42);
 
 it('can get its minimum value')

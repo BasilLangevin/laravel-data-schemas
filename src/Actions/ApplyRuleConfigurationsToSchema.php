@@ -76,7 +76,7 @@ class ApplyRuleConfigurationsToSchema
         $contracts = collect(static::$contracts);
 
         if ($entity instanceof ClassWrapper) {
-            return $contracts->only(['*', 'object']);
+            return $contracts->only(['*', 'object'])->values();
         }
 
         return $this->getApplicablePropertyContracts($entity);
@@ -88,7 +88,8 @@ class ApplyRuleConfigurationsToSchema
     protected function getApplicablePropertyContracts(PropertyWrapper $property): Collection
     {
         return collect(static::$contracts)
-            ->filter(fn ($contract, $type) => $property->hasType($type));
+            ->filter(fn ($contract, $type) => $property->hasType($type))
+            ->values();
     }
 
     /**
@@ -106,7 +107,7 @@ class ApplyRuleConfigurationsToSchema
         return collect($methods)
             ->map(fn (ReflectionMethod $method) => $method->getName())
             ->when($contract === ConfiguresIntegerSchema::class, function ($methods) {
-                $methods->merge($this->getContractMethods(ConfiguresNumberSchema::class));
+                return $methods->merge($this->getContractMethods(ConfiguresNumberSchema::class));
             });
     }
 }

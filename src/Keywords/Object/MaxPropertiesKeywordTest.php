@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its maximum value')
-    ->expect(ObjectSchema::make()->maxProperties(42))
+    ->expect(fn () => ObjectSchema::make()->maxProperties(42))
     ->getMaxProperties()->toBe(42);
 
 it('can get its maximum value')

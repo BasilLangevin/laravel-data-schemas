@@ -24,10 +24,6 @@ class TitleAnnotator implements AnnotatesSchema
             return $schema;
         }
 
-        if (! $docBlock->hasSummary()) {
-            return $schema;
-        }
-
         return $schema->title($docBlock->getSummary());
     }
 }

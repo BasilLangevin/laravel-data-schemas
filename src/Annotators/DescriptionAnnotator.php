@@ -17,10 +17,9 @@ class DescriptionAnnotator implements AnnotatesSchema
             return $schema->description($attribute->getValue());
         }
 
-        $description = match (true) {
-            $entity instanceof PropertyWrapper => static::getPropertyDescription($entity),
-            $entity instanceof ClassWrapper => static::getClassDescription($entity),
-        };
+        $description = $entity instanceof PropertyWrapper
+            ? static::getPropertyDescription($entity)
+            : static::getClassDescription($entity);
 
         if (! $description) {
             return $schema;

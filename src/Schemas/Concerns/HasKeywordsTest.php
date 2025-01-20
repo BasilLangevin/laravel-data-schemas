@@ -1,9 +1,9 @@
 <?php
 
-use BadMethodCallException;
 use BasilLangevin\LaravelDataSchemas\Enums\DataType;
 use BasilLangevin\LaravelDataSchemas\Exceptions\KeywordNotSetException;
 use BasilLangevin\LaravelDataSchemas\Keywords\Annotation\DescriptionKeyword;
+use BasilLangevin\LaravelDataSchemas\Keywords\Composition\NotKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Contracts\HandlesMultipleInstances;
 use BasilLangevin\LaravelDataSchemas\Keywords\General\TypeKeyword;
 use BasilLangevin\LaravelDataSchemas\Keywords\Keyword;
@@ -121,6 +121,23 @@ it('can set a keyword', function ($name) {
         DescriptionKeyword::method(),
     ]);
 
+it('passes itself to any schema that implements the ReceivesParentSchema interface', function () {
+    $parentSchema = StringSchema::make();
+
+    $parentSchema->not(fn (StringSchema $schema) => null);
+
+    $reflectionObject = new ReflectionObject($parentSchema);
+    $reflectionObject->getMethod('getKeywordInstances')->setAccessible(true);
+    $notInstances = $reflectionObject->getMethod('getKeywordInstances')->invoke($parentSchema, NotKeyword::class);
+
+    $not = $notInstances[0];
+
+    $reflectionProperty = new ReflectionProperty(NotKeyword::class, 'parentSchema');
+    $reflectionProperty->setAccessible(true);
+
+    expect($reflectionProperty->getValue($not))->toBe($parentSchema);
+});
+
 it('can get a keyword', function ($name) {
     $schema = HasKeywordsTestSchema::make()
         ->description('This is a description');
@@ -166,6 +183,21 @@ it('can apply a keyword', function ($name) {
         TheTestKeyword::class,
         TheTestKeyword::method(),
     ]);
+
+it('calls the apply method of the keyword when only one instance is set', function () {
+    $schema = HasKeywordsTestSchema::make();
+
+    $schema->theHandlesMultipleInstancesTest('This is a description');
+
+    $result = $schema->applyKeyword(TheHandlesMultipleInstancesTestKeyword::class, collect([
+        'type' => DataType::String->value,
+    ]));
+
+    expect($result)->toEqual(collect([
+        'type' => DataType::String->value,
+        'result' => 'I was successfully applied',
+    ]));
+});
 
 it('applies the last instance of a keyword when multiple instances are set and the keyword does not implement HandlesMultipleInstances', function () {
     $schema = HasKeywordsTestSchema::make();

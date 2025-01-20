@@ -12,12 +12,12 @@ class CustomAnnotationAnnotator implements AnnotatesSchema
     public static function annotateSchema(Schema $schema, EntityWrapper $entity): Schema
     {
         $annotations = $entity->attributes(CustomAnnotation::class)
-            ->flatMap(fn ($attribute) => $attribute->getCustomAnnotation());
+            ->flatMap->getValue();
 
         if ($annotations->isEmpty()) {
             return $schema;
         }
 
-        return $schema->customAnnotations($annotations->toArray());
+        return $schema->customAnnotation($annotations->toArray());
     }
 }

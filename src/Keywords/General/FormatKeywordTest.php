@@ -28,6 +28,14 @@ it('can apply the format to a schema')
         'format' => Format::DateTime->value,
     ]));
 
+it('can apply a Format enum value to a schema')
+    ->expect(StringSchema::make()->format(Format::DateTime->value))
+    ->applyKeyword(FormatKeyword::class, $basicOutput)
+    ->toEqual(collect([
+        'type' => DataType::String->value,
+        'format' => Format::DateTime->value,
+    ]));
+
 it('applies the format when multiple instances with the same format are applied')
     ->expect(StringSchema::make()->format(Format::DateTime)->format(Format::DateTime))
     ->applyKeyword(FormatKeyword::class, $basicOutput)

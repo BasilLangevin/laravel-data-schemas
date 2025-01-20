@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its pattern')
-    ->expect(StringSchema::make()->pattern('/^[a-z]+$/'))
+    ->expect(fn () => StringSchema::make()->pattern('/^[a-z]+$/'))
     ->getPattern()->toBe('/^[a-z]+$/');
 
 it('can get its pattern')

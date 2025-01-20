@@ -11,7 +11,7 @@ $basicOutput = collect([
 ]);
 
 it('can set its maximum value')
-    ->expect(StringSchema::make()->maxLength(42))
+    ->expect(fn () => StringSchema::make()->maxLength(42))
     ->getMaxLength()->toBe(42);
 
 it('can get its maximum value')

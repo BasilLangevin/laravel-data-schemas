@@ -36,15 +36,9 @@ it('can set its name after construction')
     ->name('test')
     ->getName()->toBe('test');
 
-/**
- * For some reason, test coverage doesn't detect the description
- * being set on construction unless it's in long form.
- */
-it('can set its description on construction', function () {
-    $schema = SchemaTestSchema::make('test', 'test description');
-
-    expect($schema->getDescription())->toBe('test description');
-});
+it('can set its description on construction')
+    ->expect(fn () => SchemaTestSchema::make('test', 'test description'))
+    ->getDescription()->toBe('test description');
 
 it('can set its description after construction')
     ->expect(SchemaTestSchema::make('test'))
@@ -56,6 +50,33 @@ it('can convert to an array')
     ->description('test description')
     ->toArray()
     ->toBe([
-        'type' => DataType::Boolean->value,
         'description' => 'test description',
     ]);
+
+it('can clone its base structure', function () {
+    $schema = SchemaTestSchema::make('test');
+    $schema->description('test description');
+
+    $clone = $schema->cloneBaseStructure();
+
+    expect($clone)->toBeInstanceOf(SchemaTestSchema::class);
+    expect($clone->getName())->toBe('');
+    expect(fn () => $clone->getDescription())->toThrow(Exception::class, 'The keyword "description" has not been set.');
+});
+
+it('can pipe itself to a callback')
+    ->expect(SchemaTestSchema::make('test')->pipe(fn (Schema $schema) => $schema->description('test description')))
+    ->getDescription()->toBe('test description');
+
+test('the pipe method returns the schema', function () {
+    $schema = SchemaTestSchema::make('test');
+    $result = $schema->pipe(fn (Schema $schema) => $schema->description('test description'));
+
+    expect($result)->toBe($schema);
+});
+
+it('has a when method that applies a callback when a condition is true')
+    ->expect(SchemaTestSchema::make('test')->when(true, fn (Schema $schema) => $schema->description('test description')))
+    ->getDescription()->toBe('test description')
+    ->expect(SchemaTestSchema::make()->when(false, fn (Schema $schema) => $schema->name('test name')))
+    ->getName()->toBe('');
